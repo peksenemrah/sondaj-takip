@@ -328,7 +328,7 @@ table.sub tr.kat td{background:var(--line2);font-weight:600}
   <div class="panel"><div class="panel-h"><h2>Yedekleme ve dışa aktarım</h2></div>
     <p>Veriler bu tarayıcıda saklanır; 7 günden eski yedek için üstte uyarı çıkar. Cihazlar arası senkron için JSON yedeği Drive'a koyup diğer cihazda geri yükleyin.</p>
     <div class="tools"><button class="btn p" onclick="yedekAl()">JSON yedek indir</button><label class="btn">Yedekten geri yükle <input type="file" accept=".json" id="yukle" style="display:none"></label>
-      <button class="btn" onclick="tumXlsx()">Tüm verileri Excel'e aktar</button><button class="btn" onclick="ornekYukle()">Örnek verileri yükle (Eylül 2026 çizelgesi)</button><button class="btn d" onclick="hepsiniSil()">Tüm verileri sil</button></div>
+      <button class="btn" onclick="tumXlsx()">Tüm verileri Excel'e aktar</button><label class="btn">Hareket listesi içe aktar (ekler) <input type="file" accept=".json" id="ice-aktar" style="display:none"></label><button class="btn" onclick="ornekYukle()">Örnek verileri yükle (Eylül 2026 çizelgesi)</button><button class="btn d" onclick="hepsiniSil()">Tüm verileri sil</button></div>
     <div class="hint" style="margin-top:8px" id="depo"></div></div>
   <div class="panel"><div class="panel-h"><h2>Gelir / gider kategorileri</h2></div>
     <div class="tools"><input type="text" id="kat-yeni" placeholder="Yeni kategori"><select id="kat-tur"><option value="gider">Gider</option><option value="gelir">Gelir</option></select><button class="btn" onclick="katEkle()">Ekle</button></div>
@@ -705,6 +705,13 @@ function yedekAl(){indirBlob('sondaj_takip_'+bugun+'.json',new Blob([JSON.string
 function yedekUyari(){const var_=D.isler.length||D.fin.length;const s=D.ayar.sonYedek;const gun=s?Math.floor((new Date(bugun)-new Date(s))/864e5):null;const goster=var_&&(gun===null||gun>=7);$('#yedek-uyari').style.display=goster?'':'none';if(goster)$('#yedek-msj').textContent=gun===null?'Henüz hiç yedek alınmadı.':`Son yedek ${gun} gün önce alındı.`}
 $('#yukle').onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const y=JSON.parse(r.result);if(!y.isler||!y.fin)throw 0;if(!confirm('Mevcut veriler yedekteki verilerle değiştirilecek. Devam?'))return;
   if(!y.kuyular){localStorage.setItem(ESKI,JSON.stringify(y));localStorage.removeItem(KEY);yukle()}else{D=normalize(y);kaydet()}hepsiniCiz();toast('Yedek yüklendi')}catch{alert('Dosya okunamadı. Geçerli bir JSON yedeği seçin.')}};r.readAsText(f);e.target.value=''};
+/* Hareket listesi içe aktarma: JSON dizisi [{tarih,tur,kat,tutar,not,odeme,defter,kuyu}] — mevcut verilere EKLER, aynı kayıt ikinci kez eklenmez */
+$('#ice-aktar').onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const arr=JSON.parse(r.result);if(!Array.isArray(arr))throw 0;let n=0,atl=0;
+  arr.forEach(x=>{if(!x.tarih||!x.tutar)return;const key=[x.tarih,x.tur||'gider',+x.tutar,x.not||''].join('|');if(D.fin.some(o=>o.iceKey===key)){atl++;return}
+    const tur=x.tur==='gelir'?'gelir':'gider';const kat=x.kat||(tur==='gelir'?'Diğer gelir':'Diğer gider');if(!D.kat[tur].includes(kat))D.kat[tur].push(kat);
+    let kuyuId='';if(x.kuyu){const k=D.kuyular.find(k=>k.yer.toLowerCase()===String(x.kuyu).toLowerCase());if(k)kuyuId=k.id}
+    D.fin.push({id:uid(),tarih:x.tarih,tur,kat,tutar:+x.tutar,kdv:x.kdv||'yok',odeme:x.odeme||'Nakit',kuyuId,isId:'',defter:x.defter==='gayri'?'gayri':'resmi',aktar:0,vade:'',not:x.not||'',oto:false,tahsilat:[],iceKey:key});n++});
+  kaydet();cizHepsi();toast(n+' hareket eklendi'+(atl?', '+atl+' zaten vardı':''))}catch{alert('Dosya okunamadı. JSON dizisi bekleniyor.')}};r.readAsText(f);e.target.value=''};
 function hepsiniSil(){if(!confirm('Tüm veriler silinecek. Emin misiniz?'))return;D=bos();kaydet();hepsiniCiz();toast('Tüm veriler silindi')}
 function katEkle(){const v=$('#kat-yeni').value.trim();if(!v)return;const t=$('#kat-tur').value;if(!D.kat[t].includes(v))D.kat[t].push(v);$('#kat-yeni').value='';kaydet();katDoldur();katListe();raporKatDoldur()}
 function katSil(t,k){D.kat[t]=D.kat[t].filter(x=>x!==k);kaydet();katDoldur();katListe();raporKatDoldur()}
