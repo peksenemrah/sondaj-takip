@@ -1,0 +1,1514 @@
+[
+ {
+  "tarih": "2026-05-09",
+  "tur": "gider",
+  "kat": "Yemek/konaklama",
+  "tutar": 2000,
+  "not": "Yeme içme – Muğla",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-05-10",
+  "tur": "gider",
+  "kat": "Yemek/konaklama",
+  "tutar": 2000,
+  "not": "Yeme içme – Muğla",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-05-11",
+  "tur": "gider",
+  "kat": "Yemek/konaklama",
+  "tutar": 3000,
+  "not": "Sabah-öğle yeme içme – Muğla-Beçin-Hisarcık-Karahayıt",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-05-11",
+  "tur": "gider",
+  "kat": "Boru ve malzeme",
+  "tutar": 2500,
+  "not": "Hisarcık yemler + … (okunamadı)",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-05-12",
+  "tur": "gider",
+  "kat": "Yemek/konaklama",
+  "tutar": 2000,
+  "not": "Yeme içme – Karahayıt (Yaşar)",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-05-13",
+  "tur": "gider",
+  "kat": "Yemek/konaklama",
+  "tutar": 2000,
+  "not": "Yeme içme – Karahayıt (Yaşar)",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-05-14",
+  "tur": "gider",
+  "kat": "Yemek/konaklama",
+  "tutar": 2500,
+  "not": "Kahvaltı + yeme içme – Karahayıt-Ekindere (İsmail)",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-05-14",
+  "tur": "gider",
+  "kat": "Bakım/onarım",
+  "tutar": 5000,
+  "not": "Pro dingil kesimi",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-05-15",
+  "tur": "gider",
+  "kat": "Yemek/konaklama",
+  "tutar": 2500,
+  "not": "Kahvaltı + yeme içme – Ekindere (İsmail)",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-05-15",
+  "tur": "gider",
+  "kat": "Bakım/onarım",
+  "tutar": 10500,
+  "not": "Pro egzoz değişimi",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-05-15",
+  "tur": "gider",
+  "kat": "Boru ve malzeme",
+  "tutar": 4000,
+  "not": "Alman zinciri + kesici uç, teknik hırdavat",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-05-16",
+  "tur": "gider",
+  "kat": "Yemek/konaklama",
+  "tutar": 2500,
+  "not": "Kahvaltı + yemek – Ekindere (İsmail)",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-05-16",
+  "tur": "gider",
+  "kat": "Diğer gider",
+  "tutar": 1000,
+  "not": "İsmail ve Erkan sigara",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-05-16",
+  "tur": "gider",
+  "kat": "Bakım/onarım",
+  "tutar": 15000,
+  "not": "Pro dingil kesimi",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-05-16",
+  "tur": "gider",
+  "kat": "Diğer gider",
+  "tutar": 20000,
+  "not": "Barış Hoca için ödeme",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-05-18",
+  "tur": "gider",
+  "kat": "Yemek/konaklama",
+  "tutar": 2000,
+  "not": "Yeme içme – Karahayıt (Veysel Yıldırım)",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-05-19",
+  "tur": "gider",
+  "kat": "Yemek/konaklama",
+  "tutar": 2500,
+  "not": "Kahvaltı + yemek – Karahayıt (Veysel ve Yaşar pompa)",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-05-19",
+  "tur": "gider",
+  "kat": "Boru ve malzeme",
+  "tutar": 7350,
+  "not": "Kablo",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-05-22",
+  "tur": "gider",
+  "kat": "Yemek/konaklama",
+  "tutar": 2000,
+  "not": "Yeme içme – Karahayıt (Mehmet Ali Karataş)",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-05-22",
+  "tur": "gider",
+  "kat": "Bakım/onarım",
+  "tutar": 10150,
+  "not": "Pro Nox dinamosu + kontak + kompresör",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-06-01",
+  "tur": "gider",
+  "kat": "Yemek/konaklama",
+  "tutar": 2000,
+  "not": "Yeme içme – Karahayıt (cenaze)",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-06-01",
+  "tur": "gider",
+  "kat": "Diğer gider",
+  "tutar": 20000,
+  "not": "Courier ve genel harcama",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-06-03",
+  "tur": "gider",
+  "kat": "Yemek/konaklama",
+  "tutar": 2000,
+  "not": "Yeme içme – Karahayıt (Ersun Yıldırım)",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-06-03",
+  "tur": "gider",
+  "kat": "Bakım/onarım",
+  "tutar": 1000,
+  "not": "Makine hidrolik vana tamiri",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-06-04",
+  "tur": "gider",
+  "kat": "Yemek/konaklama",
+  "tutar": 7000,
+  "not": "Yeme içme – Karahayıt (Ersun Yıldırım)",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-06-04",
+  "tur": "gider",
+  "kat": "Yakıt (mazot)",
+  "tutar": 5000,
+  "not": "Mazot (1 bidon)",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-06-05",
+  "tur": "gider",
+  "kat": "Yemek/konaklama",
+  "tutar": 2000,
+  "not": "Yeme içme – Karahayıt",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-06-06",
+  "tur": "gider",
+  "kat": "Yemek/konaklama",
+  "tutar": 2000,
+  "not": "Yeme içme – Bodrum iş bakma (Ramazan … tamir)",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-06-07",
+  "tur": "gider",
+  "kat": "Yemek/konaklama",
+  "tutar": 2000,
+  "not": "Yeme içme – Muğla-Alatepe-Karahayıt iş bakma",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-06-08",
+  "tur": "gider",
+  "kat": "Yemek/konaklama",
+  "tutar": 2000,
+  "not": "Yeme içme – Karahayıt (Cahit Karataş)",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-06-10",
+  "tur": "gider",
+  "kat": "Yemek/konaklama",
+  "tutar": 2000,
+  "not": "Yeme içme – Karahayıt (Vera 500 kontrol)",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-06-10",
+  "tur": "gider",
+  "kat": "Boru ve malzeme",
+  "tutar": 1000,
+  "not": "Ertuğrullar Metal",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-06-11",
+  "tur": "gider",
+  "kat": "Yemek/konaklama",
+  "tutar": 2000,
+  "not": "Yeme içme – Karahayıt (pompalar ve Vera 500 bakım)",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-06-12",
+  "tur": "gider",
+  "kat": "Yemek/konaklama",
+  "tutar": 2000,
+  "not": "Yeme içme – Karahayıt (Ahmet Karataş)",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-06-12",
+  "tur": "gider",
+  "kat": "Yakıt (mazot)",
+  "tutar": 30000,
+  "not": "Mazot (Total) – 6 bidon + Mitsubishi",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-06-12",
+  "tur": "gider",
+  "kat": "Personel/yevmiye",
+  "tutar": 1000,
+  "not": "Eleman Ramazan",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-06-13",
+  "tur": "gider",
+  "kat": "Yemek/konaklama",
+  "tutar": 2800,
+  "not": "Yeme içme Kardeşler – Selimiye pazar / Kepandere-Yiğitler-Nurhisar",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-06-13",
+  "tur": "gider",
+  "kat": "Yemek/konaklama",
+  "tutar": 1000,
+  "not": "Çay-kahve-meşrubat vs.",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-06-13",
+  "tur": "gider",
+  "kat": "Diğer gider",
+  "tutar": 1000,
+  "not": "Köpekler mama",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-06-13",
+  "tur": "gider",
+  "kat": "Kredi/borç ödemesi",
+  "tutar": 10000,
+  "not": "Dayı Ramazan nakit",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-06-15",
+  "tur": "gider",
+  "kat": "Yemek/konaklama",
+  "tutar": 2000,
+  "not": "Yeme içme – Muğla-…-Yiğitler-Nurhisar",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-06-16",
+  "tur": "gider",
+  "kat": "Boru ve malzeme",
+  "tutar": 500,
+  "not": "Depo pano için kablo – Bodrum",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-06-18",
+  "tur": "gider",
+  "kat": "Yemek/konaklama",
+  "tutar": 4000,
+  "not": "Yeme içme – Karahayıt-Hisarcık",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-06-18",
+  "tur": "gider",
+  "kat": "Boru ve malzeme",
+  "tutar": 2000,
+  "not": "Depo fiş, kablo, priz, elektrik vs.",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-06-19",
+  "tur": "gider",
+  "kat": "Yemek/konaklama",
+  "tutar": 2000,
+  "not": "Yeme içme – Karahayıt-Sakarkaya",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-06-20",
+  "tur": "gider",
+  "kat": "Yemek/konaklama",
+  "tutar": 5000,
+  "not": "Yeme içme – Hisarcık",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-06-23",
+  "tur": "gider",
+  "kat": "Yemek/konaklama",
+  "tutar": 2000,
+  "not": "Yeme içme – Karahayıt",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-06-23",
+  "tur": "gider",
+  "kat": "Hayvan/adak",
+  "tutar": 17500,
+  "not": "Keçi ve oğlak",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-06-23",
+  "tur": "gider",
+  "kat": "Hayvan/adak",
+  "tutar": 20000,
+  "not": "Teke",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-06-23",
+  "tur": "gider",
+  "kat": "Hayvan/adak",
+  "tutar": 20000,
+  "not": "Adak",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-06-23",
+  "tur": "gider",
+  "kat": "Hayvan/adak",
+  "tutar": 20000,
+  "not": "Koç",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-06-23",
+  "tur": "gider",
+  "kat": "Boru ve malzeme",
+  "tutar": 1000,
+  "not": "Yem",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-06-25",
+  "tur": "gider",
+  "kat": "Yemek/konaklama",
+  "tutar": 2000,
+  "not": "Yeme içme – Koru-Ovakışlacık-…",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-06-29",
+  "tur": "gider",
+  "kat": "Yemek/konaklama",
+  "tutar": 350,
+  "not": "Yeme içme – Bodrum Yalıçiftlik Sandy",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-06-30",
+  "tur": "gider",
+  "kat": "Yemek/konaklama",
+  "tutar": 2750,
+  "not": "Yeme içme – Koru-Hisarcık-Karahayıt (borular geldi)",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-06-30",
+  "tur": "gider",
+  "kat": "Bakım/onarım",
+  "tutar": 9000,
+  "not": "Dodge 250 akü",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-06-30",
+  "tur": "gider",
+  "kat": "Yakıt (mazot)",
+  "tutar": 2000,
+  "not": "Yakıt",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-06-30",
+  "tur": "gider",
+  "kat": "Bakım/onarım",
+  "tutar": 5500,
+  "not": "Nox dinamosu",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-07-01",
+  "tur": "gider",
+  "kat": "Bakım/onarım",
+  "tutar": 2000,
+  "not": "Duster alt takım(?) – Koru-Yalıçiftlik-Kızılağaç-Hisarcık-Karahayıt (Sener)",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-07-01",
+  "tur": "gider",
+  "kat": "Yemek/konaklama",
+  "tutar": 500,
+  "not": "Yeme içme",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-07-02",
+  "tur": "gider",
+  "kat": "Yakıt (mazot)",
+  "tutar": 4000,
+  "not": "Yakıt – Hisarcık-Karahayıt (Sener)",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-07-02",
+  "tur": "gider",
+  "kat": "Yemek/konaklama",
+  "tutar": 1550,
+  "not": "Yeme içme",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-07-03",
+  "tur": "gider",
+  "kat": "Yemek/konaklama",
+  "tutar": 2300,
+  "not": "Yeme içme – Karahayıt (Sener pompa)",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-07-03",
+  "tur": "gider",
+  "kat": "Yakıt (mazot)",
+  "tutar": 2450,
+  "not": "Yakıt",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-07-03",
+  "tur": "gider",
+  "kat": "Kredi/borç ödemesi",
+  "tutar": 20000,
+  "not": "Dayı Ramazan elden",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-07-04",
+  "tur": "gider",
+  "kat": "Yemek/konaklama",
+  "tutar": 1800,
+  "not": "Yeme içme – Selimiye-Hisarcık-Koru",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-07-04",
+  "tur": "gider",
+  "kat": "Bakım/onarım",
+  "tutar": 15000,
+  "not": "Dodge fren",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-07-06",
+  "tur": "gider",
+  "kat": "Yakıt (mazot)",
+  "tutar": 52500,
+  "not": "Mazot (14 bidon) – Bafa-Kırcağız",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-07-06",
+  "tur": "gider",
+  "kat": "Yemek/konaklama",
+  "tutar": 2000,
+  "not": "Yeme içme",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-07-07",
+  "tur": "gider",
+  "kat": "Yemek/konaklama",
+  "tutar": 1000,
+  "not": "Yeme içme – Kırcağız",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-07-08",
+  "tur": "gider",
+  "kat": "Yemek/konaklama",
+  "tutar": 1000,
+  "not": "Yeme içme – Kırcağız",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-07-08",
+  "tur": "gider",
+  "kat": "Bakım/onarım",
+  "tutar": 500,
+  "not": "Dodge ayna",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-07-09",
+  "tur": "gider",
+  "kat": "Yemek/konaklama",
+  "tutar": 2000,
+  "not": "Yeme içme – Kırcağız",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-07-09",
+  "tur": "gider",
+  "kat": "Kredi/borç ödemesi",
+  "tutar": 1000,
+  "not": "Dayı Ramazan",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-07-09",
+  "tur": "gider",
+  "kat": "Hediye/ikram",
+  "tutar": 1250,
+  "not": "Ali Sarı (Ç4?) muhtar",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-07-09",
+  "tur": "gider",
+  "kat": "Diğer gider",
+  "tutar": 11000,
+  "not": "… (öğleye – Serkan) 11.000 (okunamadı)",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-07-10",
+  "tur": "gider",
+  "kat": "Yakıt (mazot)",
+  "tutar": 43500,
+  "not": "Mazot – Kırcağız",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-07-10",
+  "tur": "gider",
+  "kat": "Yemek/konaklama",
+  "tutar": 1650,
+  "not": "Yeme içme",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-07-11",
+  "tur": "gider",
+  "kat": "Yemek/konaklama",
+  "tutar": 750,
+  "not": "Yeme içme – Kırcağız",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-07-11",
+  "tur": "gider",
+  "kat": "Personel/yevmiye",
+  "tutar": 20000,
+  "not": "Eleman Ramazan",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-07-11",
+  "tur": "gider",
+  "kat": "Kredi/borç ödemesi",
+  "tutar": 20000,
+  "not": "Dayı Ramazan",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-07-13",
+  "tur": "gider",
+  "kat": "Yemek/konaklama",
+  "tutar": 2350,
+  "not": "Yeme içme – Kırcağız",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-07-13",
+  "tur": "gider",
+  "kat": "Yakıt (mazot)",
+  "tutar": 45000,
+  "not": "Mazot",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-07-14",
+  "tur": "gider",
+  "kat": "Yemek/konaklama",
+  "tutar": 2000,
+  "not": "Yeme içme – Kırcağız-Muğla",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-07-15",
+  "tur": "gider",
+  "kat": "Yakıt (mazot)",
+  "tutar": 4250,
+  "not": "Yakıt – Muğla-Bodrum",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-07-16",
+  "tur": "gider",
+  "kat": "Diğer gider",
+  "tutar": 750,
+  "not": "Tohum – Muğla-Hisarcık",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-07-17",
+  "tur": "gider",
+  "kat": "Yemek/konaklama",
+  "tutar": 2000,
+  "not": "Yeme içme – Muğla-Hisarcık-Kırcağız",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-07-18",
+  "tur": "gider",
+  "kat": "Yemek/konaklama",
+  "tutar": 3000,
+  "not": "Yeme içme – Muğla-Selimiye-Muğla",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-07-18",
+  "tur": "gider",
+  "kat": "Yakıt (mazot)",
+  "tutar": 18000,
+  "not": "Mazot",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-07-19",
+  "tur": "gider",
+  "kat": "Yemek/konaklama",
+  "tutar": 3000,
+  "not": "Yeme içme – Muğla",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-07-20",
+  "tur": "gider",
+  "kat": "Yemek/konaklama",
+  "tutar": 3000,
+  "not": "Yeme içme – Muğla",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-07-21",
+  "tur": "gider",
+  "kat": "Yemek/konaklama",
+  "tutar": 3000,
+  "not": "Yeme içme – Muğla-Bodrum",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-07-21",
+  "tur": "gider",
+  "kat": "Bakım/onarım",
+  "tutar": 1300,
+  "not": "Motor yağı (kompresör için)",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-07-22",
+  "tur": "gider",
+  "kat": "Personel/yevmiye",
+  "tutar": 10000,
+  "not": "Eleman Ramazan",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-07-22",
+  "tur": "gider",
+  "kat": "Nakliye",
+  "tutar": 6000,
+  "not": "Nakliyeci Ramazan",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-07-27",
+  "tur": "gider",
+  "kat": "Kredi/borç ödemesi",
+  "tutar": 40000,
+  "not": "Dayı Ramazan hesap (masraf)",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-07-27",
+  "tur": "gider",
+  "kat": "Yemek/konaklama",
+  "tutar": 3500,
+  "not": "Yeme içme – Muğla",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-07-27",
+  "tur": "gider",
+  "kat": "Vergi/harç",
+  "tutar": 19600,
+  "not": "AS 250 sigorta",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-07-28",
+  "tur": "gider",
+  "kat": "Bakım/onarım",
+  "tutar": 3500,
+  "not": "Hidrolik yağ 1 teneke",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-07-28",
+  "tur": "gider",
+  "kat": "Yemek/konaklama",
+  "tutar": 3500,
+  "not": "Yeme içme",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-07-29",
+  "tur": "gider",
+  "kat": "Yemek/konaklama",
+  "tutar": 3500,
+  "not": "Yeme içme – Muğla",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-07-30",
+  "tur": "gider",
+  "kat": "Yemek/konaklama",
+  "tutar": 4500,
+  "not": "Yeme içme",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-07-30",
+  "tur": "gider",
+  "kat": "Boru ve malzeme",
+  "tutar": 500,
+  "not": "Silikon tabanca yapıştırıcı",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-07-31",
+  "tur": "gider",
+  "kat": "Yemek/konaklama",
+  "tutar": 4750,
+  "not": "Yeme içme",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-07-31",
+  "tur": "gider",
+  "kat": "Yakıt (mazot)",
+  "tutar": 4500,
+  "not": "Akaryakıt",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-07-31",
+  "tur": "gider",
+  "kat": "Nakliye",
+  "tutar": 4500,
+  "not": "Nakliye Ramazan",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-08-01",
+  "tur": "gider",
+  "kat": "Kredi/borç ödemesi",
+  "tutar": 10000,
+  "not": "Dayı Ramazan – İzmir-Bodrum",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-08-01",
+  "tur": "gider",
+  "kat": "Personel/yevmiye",
+  "tutar": 5000,
+  "not": "Eleman Ramazan (4.000 + 1.000 nakit)",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-08-01",
+  "tur": "gider",
+  "kat": "Yemek/konaklama",
+  "tutar": 2500,
+  "not": "Yeme içme",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-08-01",
+  "tur": "gider",
+  "kat": "Boru ve malzeme",
+  "tutar": 7500,
+  "not": "İzmir – … tk. kompas (Durukan) (okunamadı)",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-08-01",
+  "tur": "gider",
+  "kat": "Boru ve malzeme",
+  "tutar": 6500,
+  "not": "İzmir – filtre, … vs (Durukan) (okunamadı)",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-08-03",
+  "tur": "gider",
+  "kat": "Ekipman/demirbaş",
+  "tutar": 325000,
+  "not": "Kuyu kamerası (Durukan) – İzmir-Bodrum",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-08-03",
+  "tur": "gider",
+  "kat": "Diğer gider",
+  "tutar": 8400,
+  "not": "İzmir … kiralık",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-08-03",
+  "tur": "gider",
+  "kat": "Yakıt (mazot)",
+  "tutar": 4500,
+  "not": "Yakıt",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-08-03",
+  "tur": "gider",
+  "kat": "Yemek/konaklama",
+  "tutar": 3500,
+  "not": "Yeme içme",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-08-04",
+  "tur": "gider",
+  "kat": "Yemek/konaklama",
+  "tutar": 3500,
+  "not": "Yeme içme",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-08-04",
+  "tur": "gider",
+  "kat": "Boru ve malzeme",
+  "tutar": 350,
+  "not": "Teknik malzeme",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-08-05",
+  "tur": "gider",
+  "kat": "Yemek/konaklama",
+  "tutar": 2500,
+  "not": "Yeme içme",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-08-06",
+  "tur": "gider",
+  "kat": "Yemek/konaklama",
+  "tutar": 2500,
+  "not": "Yeme içme",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-08-07",
+  "tur": "gider",
+  "kat": "Yemek/konaklama",
+  "tutar": 1500,
+  "not": "Yeme içme – Milas (tapu)",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-08-08",
+  "tur": "gider",
+  "kat": "Personel/yevmiye",
+  "tutar": 3000,
+  "not": "Eleman Ramazan",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-08-08",
+  "tur": "gider",
+  "kat": "Yakıt (mazot)",
+  "tutar": 4500,
+  "not": "Akaryakıt",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-08-08",
+  "tur": "gider",
+  "kat": "Yemek/konaklama",
+  "tutar": 3000,
+  "not": "Yeme içme",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-08-08",
+  "tur": "gider",
+  "kat": "Hayvan/adak",
+  "tutar": 30000,
+  "not": "Koyunlar",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-08-10",
+  "tur": "gider",
+  "kat": "Yemek/konaklama",
+  "tutar": 2500,
+  "not": "Yeme içme",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-08-11",
+  "tur": "gider",
+  "kat": "Yemek/konaklama",
+  "tutar": 2000,
+  "not": "Yeme içme",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-08-11",
+  "tur": "gider",
+  "kat": "Yakıt (mazot)",
+  "tutar": 3000,
+  "not": "Akaryakıt",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-08-12",
+  "tur": "gider",
+  "kat": "Yemek/konaklama",
+  "tutar": 2500,
+  "not": "Yeme içme",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-08-12",
+  "tur": "gider",
+  "kat": "Diğer gider",
+  "tutar": 1500,
+  "not": "Baha … (okunamadı)",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-08-13",
+  "tur": "gider",
+  "kat": "Yemek/konaklama",
+  "tutar": 1000,
+  "not": "Yeme içme – Milas (tapu)",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-08-13",
+  "tur": "gider",
+  "kat": "Kredi/borç ödemesi",
+  "tutar": 5000,
+  "not": "Dayı Ramazan (masraf)",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-08-14",
+  "tur": "gider",
+  "kat": "Yemek/konaklama",
+  "tutar": 2000,
+  "not": "Yeme içme – Hisarcık nakliye",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-08-15",
+  "tur": "gider",
+  "kat": "Bakım/onarım",
+  "tutar": 2900,
+  "not": "Iveco fren malzemesi – Hisarcık nakliye / Bodrum",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-08-15",
+  "tur": "gider",
+  "kat": "Boru ve malzeme",
+  "tutar": 500,
+  "not": "Depo malzeme (… vs)",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-08-15",
+  "tur": "gider",
+  "kat": "Boru ve malzeme",
+  "tutar": 2000,
+  "not": "Gres pompası ve gres",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-08-15",
+  "tur": "gider",
+  "kat": "Yakıt (mazot)",
+  "tutar": 3500,
+  "not": "Yakıt",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-08-15",
+  "tur": "gider",
+  "kat": "Yemek/konaklama",
+  "tutar": 3000,
+  "not": "Yeme içme",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-08-15",
+  "tur": "gider",
+  "kat": "Personel/yevmiye",
+  "tutar": 35000,
+  "not": "Eleman Ramazan",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-08-15",
+  "tur": "gider",
+  "kat": "Kredi/borç ödemesi",
+  "tutar": 10000,
+  "not": "Dayı Ramazan",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-08-18",
+  "tur": "gider",
+  "kat": "Yemek/konaklama",
+  "tutar": 2850,
+  "not": "Yeme içme – Hisarcık makine toplama",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-08-18",
+  "tur": "gider",
+  "kat": "Yakıt (mazot)",
+  "tutar": 2750,
+  "not": "Mazot",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-08-19",
+  "tur": "gider",
+  "kat": "Yemek/konaklama",
+  "tutar": 2500,
+  "not": "Yeme içme – Sakarkaya-Hisarcık",
+  "odeme": "Nakit",
+  "defter": "resmi",
+  "kuyu": "Sakarkaya"
+ },
+ {
+  "tarih": "2026-08-19",
+  "tur": "gider",
+  "kat": "Bakım/onarım",
+  "tutar": 43000,
+  "not": "Hidro motor … (5-6) (okunamadı)",
+  "odeme": "Nakit",
+  "defter": "resmi",
+  "kuyu": "Sakarkaya"
+ },
+ {
+  "tarih": "2026-08-20",
+  "tur": "gider",
+  "kat": "Yemek/konaklama",
+  "tutar": 2500,
+  "not": "Yeme içme",
+  "odeme": "Nakit",
+  "defter": "resmi",
+  "kuyu": "Sakarkaya"
+ },
+ {
+  "tarih": "2026-08-21",
+  "tur": "gider",
+  "kat": "Yakıt (mazot)",
+  "tutar": 76000,
+  "not": "Mazot – Sakarkaya-Hisarcık",
+  "odeme": "Nakit",
+  "defter": "resmi",
+  "kuyu": "Sakarkaya"
+ },
+ {
+  "tarih": "2026-08-21",
+  "tur": "gider",
+  "kat": "Yemek/konaklama",
+  "tutar": 1000,
+  "not": "Yeme içme",
+  "odeme": "Nakit",
+  "defter": "resmi",
+  "kuyu": "Sakarkaya"
+ },
+ {
+  "tarih": "2026-08-22",
+  "tur": "gider",
+  "kat": "Boru ve malzeme",
+  "tutar": 12600,
+  "not": "Selim – boru indirme / inşaat malzemesi – Hisarcık",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-08-22",
+  "tur": "gider",
+  "kat": "Yemek/konaklama",
+  "tutar": 5000,
+  "not": "Yeme içme",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-08-22",
+  "tur": "gider",
+  "kat": "Personel/yevmiye",
+  "tutar": 7000,
+  "not": "Eleman Ramazan (1.000 + 6.000 nakit)",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-08-24",
+  "tur": "gider",
+  "kat": "Yemek/konaklama",
+  "tutar": 1500,
+  "not": "Yeme içme",
+  "odeme": "Nakit",
+  "defter": "resmi",
+  "kuyu": "Sakarkaya"
+ },
+ {
+  "tarih": "2026-08-24",
+  "tur": "gider",
+  "kat": "Boru ve malzeme",
+  "tutar": 12500,
+  "not": "İTS depo – Celil",
+  "odeme": "Nakit",
+  "defter": "resmi",
+  "kuyu": "Sakarkaya"
+ },
+ {
+  "tarih": "2026-08-24",
+  "tur": "gider",
+  "kat": "Nakliye",
+  "tutar": 11000,
+  "not": "Nakliye – Celil",
+  "odeme": "Nakit",
+  "defter": "resmi",
+  "kuyu": "Sakarkaya"
+ },
+ {
+  "tarih": "2026-08-24",
+  "tur": "gider",
+  "kat": "Boru ve malzeme",
+  "tutar": 1750,
+  "not": "Durmuş tesisat depo",
+  "odeme": "Nakit",
+  "defter": "resmi",
+  "kuyu": "Sakarkaya"
+ },
+ {
+  "tarih": "2026-08-25",
+  "tur": "gider",
+  "kat": "Yemek/konaklama",
+  "tutar": 1500,
+  "not": "Yeme içme",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-08-25",
+  "tur": "gider",
+  "kat": "Yakıt (mazot)",
+  "tutar": 5000,
+  "not": "Mazot",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-08-26",
+  "tur": "gider",
+  "kat": "Boru ve malzeme",
+  "tutar": 12000,
+  "not": "… çimento depo (okunamadı)",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-08-26",
+  "tur": "gider",
+  "kat": "Diğer gider",
+  "tutar": 4000,
+  "not": "Kepçe",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-08-27",
+  "tur": "gider",
+  "kat": "Yemek/konaklama",
+  "tutar": 1500,
+  "not": "Yeme içme",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-08-27",
+  "tur": "gider",
+  "kat": "Yakıt (mazot)",
+  "tutar": 3000,
+  "not": "Mazot",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-08-28",
+  "tur": "gider",
+  "kat": "Yemek/konaklama",
+  "tutar": 1000,
+  "not": "Yeme içme",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-08-28",
+  "tur": "gider",
+  "kat": "Personel/yevmiye",
+  "tutar": 5000,
+  "not": "İsmail",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-08-28",
+  "tur": "gider",
+  "kat": "Kredi/borç ödemesi",
+  "tutar": 20000,
+  "not": "Ramazan Dayı",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-08-28",
+  "tur": "gider",
+  "kat": "Diğer gider",
+  "tutar": 5000,
+  "not": "Masraf",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-08-31",
+  "tur": "gider",
+  "kat": "Yemek/konaklama",
+  "tutar": 1000,
+  "not": "Yeme içme",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-08-31",
+  "tur": "gider",
+  "kat": "Bakım/onarım",
+  "tutar": 3500,
+  "not": "Yağ",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-08-31",
+  "tur": "gider",
+  "kat": "Boru ve malzeme",
+  "tutar": 7000,
+  "not": "Depo inşaat malzemesi (tarih belirsiz, sayfa sonu)",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ },
+ {
+  "tarih": "2026-08-31",
+  "tur": "gider",
+  "kat": "Diğer gider",
+  "tutar": 4000,
+  "not": "Kepçe (tarih belirsiz, sayfa sonu)",
+  "odeme": "Nakit",
+  "defter": "resmi"
+ }
+]
