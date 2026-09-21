@@ -268,13 +268,13 @@ table.sub tr.kat td{background:var(--line2);font-weight:600}
 
 <!-- PERSONEL -->
 <section class="view" id="v-personel">
-  <div class="panel"><div class="panel-h"><h2>Personel</h2><span class="hint">Yevmiye girilirse her iş gününde otomatik personel gideri oluşur.</span></div>
+  <div class="panel"><div class="panel-h"><h2>Personel</h2><span class="hint">Hak ediş = o gün <b>eklenen inkişaf boru metresi × metre başı ücret</b>. Eklenen metre, aynı kuyunun önceki gününe göre artıştır (ilk gün tamamı). Gider otomatik oluşur.</span></div>
     <form class="form" id="f-per" autocomplete="off"><input type="hidden" id="pe-id">
-      <div class="f c4"><label>Ad soyad</label><input id="pe-ad" required></div><div class="f c3"><label>Günlük yevmiye (₺)</label><input type="number" step="0.01" id="pe-yevmiye"></div>
-      <div class="f c3"><label>Telefon</label><input id="pe-tel"></div><div class="f c2"><label>Görev</label><input id="pe-gorev" placeholder="Sondör"></div>
+      <div class="f c3"><label>Ad soyad</label><input id="pe-ad" required></div><div class="f c3"><label>Metre başı ücret (₺/m)</label><input type="number" step="0.01" min="0" id="pe-yevmiye" placeholder="ör. 150"></div>
+      <div class="f c2"><label>Telefon</label><input id="pe-tel"></div><div class="f c2"><label>Görev</label><input id="pe-gorev" placeholder="Sondör"></div>
       <div class="actions"><button type="button" class="btn" id="pe-iptal" style="display:none">Vazgeç</button><button type="submit" class="btn p" id="pe-kaydet">Kaydet</button></div></form>
-    <div class="tw" style="margin-top:12px"><table id="t-per"><thead><tr><th>Ad</th><th>Görev</th><th>Telefon</th><th class="num">Yevmiye</th><th class="num">Dönem gün</th><th class="num">Dönem hak ediş</th><th class="no-print"></th></tr></thead><tbody></tbody></table></div></div>
-  <div class="panel"><div class="panel-h"><h2>Dönem hak ediş dökümü</h2><button class="btn" onclick="csvHakedis()">CSV</button></div><div class="tw"><table id="t-hakedis"><thead><tr><th>Personel</th><th>Tarih</th><th>Kuyu</th><th class="num">Saat</th><th class="num">Yevmiye</th></tr></thead><tbody></tbody></table></div></div>
+    <div class="tw" style="margin-top:12px"><table id="t-per"><thead><tr><th>Ad</th><th>Görev</th><th>Telefon</th><th class="num">₺/m</th><th class="num">Dönem gün</th><th class="num">Dönem metraj</th><th class="num">Dönem hak ediş</th><th class="no-print"></th></tr></thead><tbody></tbody></table></div></div>
+  <div class="panel"><div class="panel-h"><h2>Dönem hak ediş dökümü</h2><button class="btn" onclick="csvHakedis()">CSV</button></div><div class="tw"><table id="t-hakedis"><thead><tr><th>Personel</th><th>Tarih</th><th>Kuyu</th><th class="num">Kuyu toplam boru (m)</th><th class="num">O gün eklenen (m)</th><th class="num">₺/m</th><th class="num">Hak ediş</th></tr></thead><tbody></tbody></table></div></div>
 </section>
 
 <!-- MAKİNELER -->
@@ -315,7 +315,7 @@ table.sub tr.kat td{background:var(--line2);font-weight:600}
     <form class="form" id="f-ayar" autocomplete="off">
       <div class="f c4"><label>Firma adı</label><input id="ay-firma"></div><div class="f c4"><label>Adres</label><input id="ay-adres"></div><div class="f c2"><label>Telefon</label><input id="ay-tel"></div><div class="f c2"><label>Vergi no / TCKN</label><input id="ay-vergi"></div>
       <div class="f c2"><label>KDV oranı (%)</label><input type="number" id="ay-kdv" value="20"></div><div class="f c2"><label>Kasa açılış (₺)</label><input type="number" step="0.01" id="ay-nakit"></div><div class="f c2"><label>Banka açılış (₺)</label><input type="number" step="0.01" id="ay-banka"></div>
-      <div class="f c3"><label>Otomatik yevmiye gideri</label><select id="ay-otoyev"><option value="1">Açık</option><option value="0">Kapalı</option></select></div><div class="f c3"><label>Otomatik yakıt gideri</label><select id="ay-otoyak"><option value="1">Açık</option><option value="0">Kapalı</option></select></div>
+      <div class="f c3"><label>Otomatik personel hak edişi (metre bazlı)</label><select id="ay-otoyev"><option value="1">Açık</option><option value="0">Kapalı</option></select></div><div class="f c3"><label>Otomatik yakıt gideri</label><select id="ay-otoyak"><option value="1">Açık</option><option value="0">Kapalı</option></select></div>
       <div class="actions"><button type="submit" class="btn p">Ayarları kaydet</button></div></form></div>
   <div class="panel"><div class="panel-h"><h2>Bulut senkron (Firebase Realtime Database)</h2><span id="bulut-durum" class="hint"></span></div>
     <p>Firebase konsolundan aldığınız <code>firebaseConfig</code> nesnesini yapıştırın. Dosyanın içine gömmek isterseniz kodun başındaki <code>FIREBASE_CONFIG</code> sabitini doldurun; o zaman bu alan gerekmez.</p>
@@ -399,8 +399,8 @@ const per=id=>D.personel.find(p=>p.id===id);const perAd=ids=>(ids||[]).map(i=>(p
 const turTag=t=>t==='gayri'?'<span class="tag gayri">Gayriresmi</span>':'<span class="tag resmi">Resmi</span>';
 const durumTag=o=>o.durum==='tamam'?'<span class="tag ok">Tamamlandı</span>':'<span class="tag wip">Devam</span>';
 const kaydet=()=>{D._ts=Date.now();D._cid=CID;try{localStorage.setItem(KEY,JSON.stringify(D))}catch(e){alert('Depolama dolu. Kuyu fotoğraflarını azaltın veya yedek alıp temizleyin.')}depoBilgi();fbGonder()};
-function normalize(v){const d=Object.assign(bos(),v);d.ayar=Object.assign(bos().ayar,v.ayar||{});d.kat=Object.assign(bos().kat,v.kat||{});['kuyular','isler','fin','personel','makineler','bakim'].forEach(k=>{if(!Array.isArray(d[k]))d[k]=Object.values(d[k]||{})});
-  d.kuyular.forEach(k=>{k.foto=Array.isArray(k.foto)?k.foto:Object.values(k.foto||{})});d.isler.forEach(j=>{j.personel=Array.isArray(j.personel)?j.personel:Object.values(j.personel||{})});d.fin.forEach(f=>{f.tahsilat=Array.isArray(f.tahsilat)?f.tahsilat:Object.values(f.tahsilat||{})});return d}
+function normalize(v){const d=Object.assign(bos(),v);(d.personel||[]).forEach(p=>p.tip='metre');d.ayar=Object.assign(bos().ayar,v.ayar||{});d.kat=Object.assign(bos().kat,v.kat||{});['kuyular','isler','fin','personel','makineler','bakim'].forEach(k=>{if(!Array.isArray(d[k]))d[k]=Object.values(d[k]||{})});
+  d.kuyular.forEach(k=>{k.foto=Array.isArray(k.foto)?k.foto:Object.values(k.foto||{})});d.isler.forEach(j=>{j.personel=Array.isArray(j.personel)?j.personel:Object.values(j.personel||{})});d.fin.forEach(f=>{f.tahsilat=Array.isArray(f.tahsilat)?f.tahsilat:Object.values(f.tahsilat||{})});d.personel.forEach(p=>{if(!p.tip)p.tip='gun'});return d}
 function depoBilgi(){const b=new Blob([JSON.stringify(D)]).size;const el=$('#depo');if(el)el.textContent='Kullanılan depolama: '+(b/1024).toLocaleString('tr-TR',{maximumFractionDigits:0})+' KB (tarayıcı sınırı ~5.000 KB)'}
 
 /* ---- Yükleme / eski sürümden geçiş ---- */
@@ -409,7 +409,7 @@ function yukle(){
   const v1=localStorage.getItem(ESKI);D=bos();
   if(v1){const E=JSON.parse(v1);if(E.kat)D.kat=E.kat;
     const perMap={},makMap={};
-    const perId=ad=>{ad=ad.trim();if(!ad)return null;if(!perMap[ad]){const p={id:uid(),ad,yevmiye:0,tel:'',gorev:''};D.personel.push(p);perMap[ad]=p.id}return perMap[ad]};
+    const perId=ad=>{ad=ad.trim();if(!ad)return null;if(!perMap[ad]){const p={id:uid(),ad,tip:'metre',yevmiye:0,tel:'',gorev:''};D.personel.push(p);perMap[ad]=p.id}return perMap[ad]};
     const makId=(ad,tip)=>{ad=(ad||'').trim();if(!ad)return '';if(!makMap[ad]){const m={id:uid(),ad,tip,litre:0,fiyat:0,not:''};D.makineler.push(m);makMap[ad]=m.id}return makMap[ad]};
     const kuyuMap={};
     (E.isler||[]).forEach(o=>{const kk=o.yer+'|'+(o.musteri||'');let k=kuyuMap[kk];if(!k){k={id:uid(),yer:o.yer,musteri:o.musteri||'',tel:'',tur:o.tur||'resmi',anlasma:0,koor:'',teslim:'',tutanak:'',not:'',foto:[]};D.kuyular.push(k);kuyuMap[kk]=k}
@@ -453,15 +453,22 @@ function perChk(el,secili){el.innerHTML=D.personel.length?D.personel.map(p=>`<la
 const chkDeger=el=>[...el.querySelectorAll('input:checked')].map(i=>i.value);
 
 /* ============ Otomatik giderler ============ */
+/* Personel hak edişi: metre başı → inkişaf boru metresi × birim ücret; günlük → birim ücret */
+/* O gün eklenen inkişaf boru metresi: aynı kuyuda bu günden önceki en yüksek boru metrajına göre artış */
+function eklenenMetre(job){const m=+job.inbm||0;if(!m)return 0;const onceki=Math.max(0,...D.isler.filter(x=>x.kuyuId===job.kuyuId&&x.id!==job.id&&(x.tarih<job.tarih||(x.tarih===job.tarih&&x.id<job.id))).map(x=>+x.inbm||0));return Math.max(0,Math.round((m-onceki)*100)/100)}
+function hakedisTutar(p,job){const u=+p.yevmiye||0;return u?eklenenMetre(job)*u:0}
+const hakedisNot=(p,job)=>`Metre ücreti: ${p.ad} · ${eklenenMetre(job)} m × ${TL(p.yevmiye)}/m`;
+/* Bir kuyudaki tüm günlerin otomatik giderlerini yeniden üret (metre artışları birbirine bağlı) */
+function kuyuOtoYenile(kuyuId){D.isler.filter(x=>x.kuyuId===kuyuId).forEach(otoGiderUret)}
 function otoGiderUret(job){D.fin=D.fin.filter(o=>!(o.oto&&o.isId===job.id));const k=kuyu(job.kuyuId);const defter=k?k.tur:'resmi';
   const ekle=(kat,tutar,not,ek)=>{if(tutar>0)D.fin.push(Object.assign({id:uid(),tarih:job.tarih,tur:'gider',kat,tutar:Math.round(tutar*100)/100,kdv:'yok',odeme:'Nakit',kuyuId:job.kuyuId,isId:job.id,defter,aktar:0,not,oto:true,tahsilat:[]},ek))};
   if(+D.ayar.otoYak){[[job.makId,job.mbidon],[job.kompId,job.kbidon]].forEach(([id,b])=>{const m=mak(id);if(m&&+b>0&&+m.litre>0&&+m.fiyat>0)ekle('Yakıt (mazot)',b*m.litre*m.fiyat,`Otomatik yakıt: ${m.ad} · ${b} bidon × ${m.litre} L × ${TL(m.fiyat)}`,{makId:id})})}
-  if(+D.ayar.otoYev)(job.personel||[]).forEach(pid=>{const p=per(pid);if(p&&+p.yevmiye>0)ekle('Personel/yevmiye',+p.yevmiye,`Yevmiye: ${p.ad}`,{perId:pid})})}
+  if(+D.ayar.otoYev)(job.personel||[]).forEach(pid=>{const p=per(pid);if(p)ekle('Personel/yevmiye',hakedisTutar(p,job),hakedisNot(p,job),{perId:pid})})}
 function otoBilgi(){const m=mak($('#is-mak').value),k=mak($('#is-komp').value);const pers=chkDeger($('#is-personel')).map(per).filter(p=>p&&+p.yevmiye>0);let s=[];
   if(+D.ayar.otoYak){const y=(m&&m.litre&&m.fiyat?(+$('#is-mbidon').value||0)*m.litre*m.fiyat:0)+(k&&k.litre&&k.fiyat?(+$('#is-kbidon').value||0)*k.litre*k.fiyat:0);if(y)s.push('yakıt '+TL(y))}
-  if(+D.ayar.otoYev&&pers.length)s.push('yevmiye '+TL(pers.reduce((a,p)=>a+ +p.yevmiye,0)));
+  if(+D.ayar.otoYev&&pers.length){const j={id:$('#is-id').value||'~yeni',kuyuId:$('#is-kuyu').value,tarih:$('#is-tarih').value,inbm:$('#is-inbm').value};const em=eklenenMetre(j);s.push('personel '+TL(pers.reduce((a,p)=>a+hakedisTutar(p,j),0))+' ('+em+' m eklenen boru)')}
   $('#is-oto-bilgi').textContent=s.length?'Kaydedince otomatik gider oluşacak: '+s.join(', ')+'.':''}
-['#is-mak','#is-komp','#is-mbidon','#is-kbidon'].forEach(s=>$(s).addEventListener('input',otoBilgi));$('#is-personel').addEventListener('change',otoBilgi);
+['#is-mak','#is-komp','#is-mbidon','#is-kbidon','#is-inbm','#is-kuyu','#is-tarih'].forEach(s=>$(s).addEventListener('input',otoBilgi));$('#is-personel').addEventListener('change',otoBilgi);
 
 /* ============ KUYULAR ============ */
 let kuFoto=[];
@@ -524,12 +531,12 @@ const isAlan=['kuyuId','tarih','durum','bas','bit','agdc','agdm','agbc','agbm','
 const isEl={kuyuId:'#is-kuyu',makId:'#is-mak',kompId:'#is-komp'};const isSel=a=>$(isEl[a]||'#is-'+a);
 function isTemizle(){$('#f-is').reset();$('#is-id').value='';$('#is-tarih').value=bugun;perChk($('#is-personel'));$('#is-form-h').textContent='Yeni iş günü';$('#is-kaydet').textContent='Kaydet';$('#is-iptal').style.display='none';otoBilgi()}
 $('#is-iptal').onclick=isTemizle;
-function isKaydetOrtak(o){const i=D.isler.findIndex(x=>x.id===o.id);i>=0?D.isler[i]=o:D.isler.push(o);otoGiderUret(o);kaydet();cizHepsi();return i>=0}
+function isKaydetOrtak(o){const i=D.isler.findIndex(x=>x.id===o.id);const eskiKuyu=i>=0?D.isler[i].kuyuId:null;i>=0?D.isler[i]=o:D.isler.push(o);kuyuOtoYenile(o.kuyuId);if(eskiKuyu&&eskiKuyu!==o.kuyuId)kuyuOtoYenile(eskiKuyu);kaydet();cizHepsi();return i>=0}
 $('#f-is').onsubmit=e=>{e.preventDefault();const o={id:$('#is-id').value||uid(),personel:chkDeger($('#is-personel'))};isAlan.forEach(a=>o[a]=isSel(a).value.trim());
   const g=isKaydetOrtak(o);isTemizle();toast(g?'İş günü güncellendi':'İş günü eklendi')};
 function isDuzenle(id){const o=D.isler.find(x=>x.id===id);if(!o)return;isAlan.forEach(a=>isSel(a).value=o[a]||'');perChk($('#is-personel'),o.personel);$('#is-id').value=id;$('#is-form-h').textContent='İş gününü düzenle';$('#is-kaydet').textContent='Güncelle';$('#is-iptal').style.display='';otoBilgi();sekme('isler');window.scrollTo({top:0,behavior:'smooth'})}
 function isKopyala(id){const o=D.isler.find(x=>x.id===id);if(!o)return;isDuzenle(id);$('#is-id').value='';$('#is-tarih').value=bugun;$('#is-not').value='';$('#is-form-h').textContent='Yeni iş günü (önceki kayıttan kopya)';$('#is-kaydet').textContent='Kaydet';toast('Önceki gün kopyalandı; tarih bugüne alındı')}
-function isSil(id){if(!confirm('Bu iş günü ve ona bağlı otomatik giderler silinsin mi?'))return;D.isler=D.isler.filter(x=>x.id!==id);D.fin=D.fin.filter(o=>!(o.oto&&o.isId===id));kaydet();cizHepsi();toast('Silindi')}
+function isSil(id){if(!confirm('Bu iş günü ve ona bağlı otomatik giderler silinsin mi?'))return;const j=D.isler.find(x=>x.id===id);D.isler=D.isler.filter(x=>x.id!==id);D.fin=D.fin.filter(o=>!(o.oto&&o.isId===id));if(j)kuyuOtoYenile(j.kuyuId);kaydet();cizHepsi();toast('Silindi')}
 $('#is-ara').oninput=cizIsler;$('#is-tum').onchange=cizIsler;
 function cizIsler(){const q=$('#is-ara').value.toLowerCase(),tum=$('#is-tum').checked,ay=ayim();
   const rows=D.isler.filter(o=>(tum||o.tarih.startsWith(ay))&&(!q||[kuyuAd(o.kuyuId),perAd(o.personel),o.not].join(' ').toLowerCase().includes(q))).sort((a,b)=>a.tarih.localeCompare(b.tarih));
@@ -584,15 +591,15 @@ function cizAlacak(){const kapali=$('#al-kapali').checked;let aA=0,aV=0,bA=0,bV=
 
 /* ============ PERSONEL ============ */
 function peTemizle(){$('#f-per').reset();$('#pe-id').value='';$('#pe-kaydet').textContent='Kaydet';$('#pe-iptal').style.display='none'}$('#pe-iptal').onclick=peTemizle;
-$('#f-per').onsubmit=e=>{e.preventDefault();const o={id:$('#pe-id').value||uid(),ad:$('#pe-ad').value.trim(),yevmiye:+$('#pe-yevmiye').value||0,tel:$('#pe-tel').value.trim(),gorev:$('#pe-gorev').value.trim()};const i=D.personel.findIndex(p=>p.id===o.id);i>=0?D.personel[i]=o:D.personel.push(o);
-  if(i>=0&&confirm('Bu personelin geçmiş iş günlerindeki otomatik yevmiye giderleri yeni yevmiyeye göre yenilensin mi?'))D.isler.filter(j=>(j.personel||[]).includes(o.id)).forEach(otoGiderUret);kaydet();peTemizle();cizHepsi();toast('Personel kaydedildi')};
+$('#f-per').onsubmit=e=>{e.preventDefault();const o={id:$('#pe-id').value||uid(),ad:$('#pe-ad').value.trim(),tip:'metre',yevmiye:+$('#pe-yevmiye').value||0,tel:$('#pe-tel').value.trim(),gorev:$('#pe-gorev').value.trim()};const i=D.personel.findIndex(p=>p.id===o.id);i>=0?D.personel[i]=o:D.personel.push(o);
+  if(i>=0&&confirm('Bu personelin geçmiş iş günlerindeki hak edişleri yeni metre ücretine göre yeniden hesaplansın mı?'))D.isler.filter(j=>(j.personel||[]).includes(o.id)).forEach(otoGiderUret);kaydet();peTemizle();cizHepsi();toast('Personel kaydedildi')};
 function peDuzenle(id){const p=per(id);$('#pe-id').value=id;$('#pe-ad').value=p.ad;$('#pe-yevmiye').value=p.yevmiye||'';$('#pe-tel').value=p.tel||'';$('#pe-gorev').value=p.gorev||'';$('#pe-kaydet').textContent='Güncelle';$('#pe-iptal').style.display=''}
 function peSil(id){if(!confirm('Personel silinsin mi? İş günlerindeki kayıtlarından çıkarılır.'))return;D.personel=D.personel.filter(p=>p.id!==id);D.isler.forEach(j=>j.personel=(j.personel||[]).filter(x=>x!==id));kaydet();cizHepsi()}
-function hakedis(aralikA,aralikB){const rows=[];D.isler.filter(j=>j.tarih>=aralikA&&j.tarih<=aralikB).sort((a,b)=>a.tarih.localeCompare(b.tarih)).forEach(j=>(j.personel||[]).forEach(pid=>{const p=per(pid);if(!p)return;const f=D.fin.find(x=>x.oto&&x.isId===j.id&&x.perId===pid);rows.push({p,j,yev:f?f.tutar:(+p.yevmiye||0)})}));return rows}
+function hakedis(aralikA,aralikB){const rows=[];D.isler.filter(j=>j.tarih>=aralikA&&j.tarih<=aralikB).sort((a,b)=>a.tarih.localeCompare(b.tarih)).forEach(j=>(j.personel||[]).forEach(pid=>{const p=per(pid);if(!p)return;const f=D.fin.find(x=>x.oto&&x.isId===j.id&&x.perId===pid);rows.push({p,j,yev:f?f.tutar:hakedisTutar(p,j),m:eklenenMetre(j),top:+j.inbm||0})}));return rows}
 function cizPersonel(){const ay=ayim();const h=hakedis(ay+'-01',ay+'-31');
-  $('#t-per tbody').innerHTML=D.personel.map(p=>{const r=h.filter(x=>x.p.id===p.id);return`<tr><td>${esc(p.ad)}</td><td>${esc(p.gorev)}</td><td>${esc(p.tel)}</td><td class="num">${TL(p.yevmiye)}</td><td class="num">${r.length}</td><td class="num">${TL(r.reduce((s,x)=>s+x.yev,0))}</td><td class="no-print"><button class="btn s" onclick="peDuzenle('${p.id}')">Düzenle</button> <button class="btn s d" onclick="peSil('${p.id}')">Sil</button></td></tr>`}).join('')||'<tr><td colspan="7" class="empty">Personel yok.</td></tr>';
-  $('#t-hakedis tbody').innerHTML=h.map(x=>`<tr><td>${esc(x.p.ad)}</td><td>${trh(x.j.tarih)}</td><td>${esc(kuyuAd(x.j.kuyuId))}</td><td class="num">${s1(saatFark(x.j.bas,x.j.bit))}</td><td class="num">${TL(x.yev)}</td></tr>`).join('')||'<tr><td colspan="5" class="empty">Bu dönemde çalışma yok.</td></tr>'}
-function csvHakedis(){const ay=ayim();indirCSV('hakedis_'+ay+'.csv',[['Personel','Tarih','Kuyu','Saat','Yevmiye'],...hakedis(ay+'-01',ay+'-31').map(x=>[x.p.ad,trh(x.j.tarih),kuyuAd(x.j.kuyuId),saatFark(x.j.bas,x.j.bit),x.yev])])}
+  $('#t-per tbody').innerHTML=D.personel.map(p=>{const r=h.filter(x=>x.p.id===p.id);return`<tr><td>${esc(p.ad)}</td><td>${esc(p.gorev)}</td><td>${esc(p.tel)}</td><td class="num">${p.yevmiye?TL(p.yevmiye)+'/m':'<span class="kalan-p">girilmedi</span>'}</td><td class="num">${r.length}</td><td class="num">${s1(r.reduce((s,x)=>s+x.m,0))} m</td><td class="num">${TL(r.reduce((s,x)=>s+x.yev,0))}</td><td class="no-print"><button class="btn s" onclick="peDuzenle('${p.id}')">Düzenle</button> <button class="btn s d" onclick="peSil('${p.id}')">Sil</button></td></tr>`}).join('')||'<tr><td colspan="9" class="empty">Personel yok.</td></tr>';
+  $('#t-hakedis tbody').innerHTML=h.map(x=>`<tr><td>${esc(x.p.ad)}</td><td>${trh(x.j.tarih)}</td><td>${esc(kuyuAd(x.j.kuyuId))}</td><td class="num">${x.top||'—'}</td><td class="num">${x.m||'—'}</td><td class="num">${TL(x.p.yevmiye)}</td><td class="num">${TL(x.yev)}</td></tr>`).join('')||'<tr><td colspan="7" class="empty">Bu dönemde çalışma yok.</td></tr>'}
+function csvHakedis(){const ay=ayim();indirCSV('hakedis_'+ay+'.csv',[['Personel','Tarih','Kuyu','Kuyu toplam boru (m)','O gün eklenen (m)','₺/m','Hak ediş'],...hakedis(ay+'-01',ay+'-31').map(x=>[x.p.ad,trh(x.j.tarih),kuyuAd(x.j.kuyuId),x.top,x.m,x.p.yevmiye,x.yev])])}
 
 /* ============ MAKİNELER / BAKIM ============ */
 function mkTemizle(){$('#f-mak').reset();$('#mk-id').value='';$('#mk-kaydet').textContent='Kaydet';$('#mk-iptal').style.display='none'}$('#mk-iptal').onclick=mkTemizle;
@@ -683,9 +690,9 @@ function raporOlustur(hepsi){const tip=$('#r-tip').value,df=$('#r-defter').value
     Object.keys(gr).sort((a,b)=>a.localeCompare(b,'tr')).forEach(k=>{const alt=gr[k].reduce((s,o)=>s+o.tutar,0);T+=alt;body+=`<tr class="kat"><td colspan="8">${esc(k)} · ${gr[k].length} kalem</td>${tdn(TL(alt))}</tr>`;
       gr[k].forEach(o=>{csv.push([trh(o.tarih),o.kat,o.not,kuyuAd(o.kuyuId),o.defter==='gayri'?'Gayriresmi':'Resmi',o.odeme,o.kdv,o.oto?'Otomatik':'Elle',o.tutar]);body+=`<tr><td>${trh(o.tarih)}</td><td>${esc(o.kat)}</td><td class="note">${esc(o.not)}</td><td>${esc(kuyuAd(o.kuyuId))}</td><td>${turTag(o.defter)}</td><td>${esc(o.odeme)}</td><td>${{dahil:'Dahil',haric:'Hariç',yok:'—'}[o.kdv]||''}</td><td>${o.oto?'<span class="tag oto">oto</span>':''}</td>${tdn(TL(o.tutar))}</tr>`});csv.push(['',k+' ara toplam','','','','','','',alt])});csv.push(['TOPLAM','','','','','','','',T]);
     html=`<div class="rapor-baslik">Gider kalemleri · ${ar.etiket}${dfAd}${kf?' · '+esc(kf):''}</div><div class="tw"><table class="sub">${th(bas)}<tbody>${body||'<tr><td colspan="9" class="empty">Gider yok.</td></tr>'}</tbody><tfoot><tr><td colspan="8">Toplam · ${g.length} kalem</td>${tdn(TL(T))}</tr></tfoot></table></div>`}
-  if(tip==='personel'){const h=hakedis(ar.a,ar.b);const bas=['Personel','Gün','Saat','Hak ediş'];csv.push(bas);const gr={};h.forEach(x=>(gr[x.p.id]=gr[x.p.id]||{p:x.p,n:0,sa:0,t:0,r:[]}));h.forEach(x=>{const g=gr[x.p.id];g.n++;g.sa+=saatFark(x.j.bas,x.j.bit);g.t+=x.yev;g.r.push(x)});let T=0,body='';
-    Object.values(gr).forEach(g=>{T+=g.t;csv.push([g.p.ad,g.n,g.sa,g.t]);body+=`<tr class="kat"><td>${esc(g.p.ad)}</td><td colspan="1"></td>${tdn(g.n)}${tdn(s1(g.sa))}${tdn(TL(g.t))}</tr>`+g.r.map(x=>`<tr><td></td><td>${trh(x.j.tarih)} · ${esc(kuyuAd(x.j.kuyuId))}</td><td></td>${tdn(s1(saatFark(x.j.bas,x.j.bit)))}${tdn(TL(x.yev))}</tr>`).join('')});csv.push(['TOPLAM','','',T]);
-    html=`<div class="rapor-baslik">Personel hak ediş · ${ar.etiket}</div><div class="tw"><table class="sub"><thead><tr><th>Personel</th><th>Gün / kuyu</th><th class="num">Gün sayısı</th><th class="num">Saat</th><th class="num">Yevmiye</th></tr></thead><tbody>${body||'<tr><td colspan="5" class="empty">Çalışma yok.</td></tr>'}</tbody><tfoot><tr><td colspan="4">Toplam</td>${tdn(TL(T))}</tr></tfoot></table></div>`}
+  if(tip==='personel'){const h=hakedis(ar.a,ar.b);const bas=['Personel','Gün','Eklenen boru (m)','₺/m','Hak ediş'];csv.push(bas);const gr={};h.forEach(x=>(gr[x.p.id]=gr[x.p.id]||{p:x.p,n:0,m:0,sa:0,t:0,r:[]}));h.forEach(x=>{const g=gr[x.p.id];g.n++;g.m+=x.m;g.sa+=saatFark(x.j.bas,x.j.bit);g.t+=x.yev;g.r.push(x)});let T=0,body='';
+    Object.values(gr).forEach(g=>{T+=g.t;csv.push([g.p.ad,g.n,g.m,g.p.yevmiye,g.t]);body+=`<tr class="kat"><td>${esc(g.p.ad)} </td><td></td>${tdn(g.n)}${tdn(s1(g.m))}${tdn(TL(g.p.yevmiye))}${tdn(TL(g.t))}</tr>`+g.r.map(x=>`<tr><td></td><td>${trh(x.j.tarih)} · ${esc(kuyuAd(x.j.kuyuId))} <span class="hint">(kuyu toplam ${x.top||0} m)</span></td><td></td>${tdn(x.m||'—')}${tdn('')}${tdn(TL(x.yev))}</tr>`).join('');csv.push(...g.r.map(x=>['  '+trh(x.j.tarih)+' '+kuyuAd(x.j.kuyuId),'',x.m,'',x.yev]))});csv.push(['TOPLAM','','','',T]);
+    html=`<div class="rapor-baslik">Personel hak ediş · ${ar.etiket}</div><div class="tw"><table class="sub"><thead><tr><th>Personel</th><th>Gün / kuyu</th><th class="num">Gün sayısı</th><th class="num">Eklenen boru (m)</th><th class="num">₺/m</th><th class="num">Hak ediş</th></tr></thead><tbody>${body||'<tr><td colspan="6" class="empty">Çalışma yok.</td></tr>'}</tbody><tfoot><tr><td colspan="5">Toplam</td>${tdn(TL(T))}</tr></tfoot></table></div>`}
   if(tip==='kasa'){const h=kasaHareketleri().filter(x=>x.tarih>=ar.a&&x.tarih<=ar.b&&(!df||x.defter===df));const acilis=bakiye(ar.a==='0000'?'0000':(()=>{const d=new Date(ar.a);d.setDate(d.getDate()-1);return d.toISOString().slice(0,10)})());let n=acilis.nakit,b=acilis.banka;
     const bas=['Tarih','Hesap','Açıklama','Kuyu','Giriş','Çıkış','Nakit bakiye','Banka bakiye'];csv.push(bas);csv.push([ar.a==='0000'?'Açılış':trh(ar.a),'','Açılış bakiyesi','','','',n,b]);
     const rows=h.map(x=>{x.hesap==='nakit'?n+=x.tutar:b+=x.tutar;csv.push([trh(x.tarih),x.hesap==='nakit'?'Nakit':'Banka',x.not,kuyuAd(x.kuyuId),x.tutar>0?x.tutar:'',x.tutar<0?-x.tutar:'',n,b]);return`<tr><td>${trh(x.tarih)}</td><td>${x.hesap==='nakit'?'Nakit':'Banka'}</td><td class="note">${esc(x.not)}</td><td>${esc(kuyuAd(x.kuyuId))}</td>${tdn(x.tutar>0?TL(x.tutar):'')}${tdn(x.tutar<0?TL(-x.tutar):'')}${tdn(TL(n))}${tdn(TL(b))}</tr>`}).join('');
@@ -706,7 +713,7 @@ const finSatirlari=()=>[['Tarih','Tür','Defter','Kategori','Açıklama','Kuyu',
 function csvIs(){indirCSV('is_gunleri.csv',isSatirlari())}function csvFn(){indirCSV('gelir_gider.csv',finSatirlari())}
 function tumXlsx(){xlsxIndir('sondaj_takip_'+bugun+'.xlsx',{'İş günleri':isSatirlari(),'Gelir-Gider':finSatirlari(),
   'Kuyular':[['Kuyu','Müşteri','Telefon','Tür','Anlaşma','Koordinat','Teslim','Tutanak','Not'],...D.kuyular.map(k=>[k.yer,k.musteri,k.tel,k.tur,k.anlasma,k.koor,trh(k.teslim),k.tutanak,k.not])],
-  'Personel':[['Ad','Görev','Telefon','Yevmiye'],...D.personel.map(p=>[p.ad,p.gorev,p.tel,p.yevmiye])],'Makineler':[['Ad','Tip','Bidon L','₺/L','Not'],...D.makineler.map(m=>[m.ad,m.tip,m.litre,m.fiyat,m.not])],
+  'Personel':[['Ad','Görev','Telefon','Metre başı ücret (₺/m)'],...D.personel.map(p=>[p.ad,p.gorev,p.tel,p.yevmiye])],'Makineler':[['Ad','Tip','Bidon L','₺/L','Not'],...D.makineler.map(m=>[m.ad,m.tip,m.litre,m.fiyat,m.not])],
   'Bakım':[['Tarih','Makine','Açıklama','Maliyet'],...D.bakim.map(b=>[trh(b.tarih),makAd(b.makId),b.not,b.tutar])]})}
 
 /* ============ AYARLAR / YEDEK ============ */
@@ -730,7 +737,7 @@ function katListe(){$('#kat-liste').innerHTML=['gelir','gider'].map(t=>`<h3 styl
 
 /* ============ Örnek veri ============ */
 function ornekYukle(sessiz){if(!sessiz&&(D.isler.length||D.kuyular.length)&&!confirm('Örnek kayıtlar mevcut verilere eklenecek. Devam?'))return;
-  const P=ad=>{const p={id:uid(),ad,yevmiye:0,tel:'',gorev:'Sondör'};D.personel.push(p);return p.id};const M=(ad,tip)=>{const m={id:uid(),ad,tip,litre:0,fiyat:0,not:''};D.makineler.push(m);return m.id};
+  const P=ad=>{const p={id:uid(),ad,tip:'metre',yevmiye:0,tel:'',gorev:'Sondör'};D.personel.push(p);return p.id};const M=(ad,tip)=>{const m={id:uid(),ad,tip,litre:0,fiyat:0,not:''};D.makineler.push(m);return m.id};
   const ram=P('Ramazan'),ism=P('İsmail'),vera=M('Vera 500','makine'),fied=M('Fiedler 380','makine'),atlas=M('Atlas','komp'),shoot=M('Shoot','komp');
   const K=(yer,musteri,tur,anlasma,not)=>{const k={id:uid(),yer,musteri,tel:'',tur,anlasma,koor:'',teslim:'',tutanak:'',not,foto:[]};D.kuyular.push(k);return k.id};
   const k1=K('Sakarkaya','Zebur / Bülent / Burhanettin','resmi',0,'Çizelgede 01–10 Eylül arası aynı yerde beş iş günü; müşteri adları günlere göre farklı yazılmış.'),k2=K('Karabayat','Mehmet Aydın','resmi',100000,''),k3=K('','Durmuş Ali','resmi',0,'Yer adı çizelgede okunamadı.');
