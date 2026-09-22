@@ -1,8 +1,8 @@
 /* Sondaj İş Takip – çevrimdışı önbellek */
-const SURUM='sondaj-v4';
-const TEMEL=['./','./index.html','./manifest.webmanifest','./icon-192.png','./icon-512.png','./icon-maskable-512.png'];
+const SURUM='sondaj-v5';
+const TEMEL=['./','./index.html','./manifest.webmanifest','./zirve-192.png','./zirve-512.png','./zirve-maskable-512.png'];
 const CDN=/^https:\/\/(cdnjs\.cloudflare\.com|www\.gstatic\.com\/firebasejs|fonts\.googleapis\.com|fonts\.gstatic\.com|[abc]\.tile\.openstreetmap\.org)\//;
-self.addEventListener('install',e=>{e.waitUntil(caches.open(SURUM).then(c=>c.addAll(TEMEL)).then(()=>self.skipWaiting()))});
+self.addEventListener('install',e=>{e.waitUntil(caches.open(SURUM).then(c=>c.addAll(TEMEL.map(u=>new Request(u,{cache:'reload'})))).then(()=>self.skipWaiting()))});
 self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k!==SURUM).map(k=>caches.delete(k)))).then(()=>self.clients.claim()))});
 self.addEventListener('fetch',e=>{const r=e.request;if(r.method!=='GET')return;const u=r.url;
   /* Uygulama sayfası: önce ağ, yoksa önbellek (güncellemeler hemen gelir) */
