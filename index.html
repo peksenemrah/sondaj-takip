@@ -264,9 +264,9 @@ table.sub tr.kat td{background:var(--line2);font-weight:600}
     </form>
   </div>
   <div class="grid g3" style="margin-bottom:16px">
-    <div class="stat gelir"><div class="v" id="m-gelir">₺0</div><div class="l">Dönem geliri</div></div>
-    <div class="stat gider"><div class="v" id="m-gider">₺0</div><div class="l">Dönem gideri</div></div>
-    <div class="stat net"><div class="v" id="m-net">₺0</div><div class="l">Dönem net</div></div>
+    <div class="stat gelir"><div class="v" id="m-gelir">₺0</div><div class="l">Dönem geliri <span id="m-gelir-h"></span></div></div>
+    <div class="stat gider"><div class="v" id="m-gider">₺0</div><div class="l">Dönem gideri <span id="m-gider-h"></span></div></div>
+    <div class="stat net"><div class="v" id="m-net">₺0</div><div class="l">Dönem net <span id="m-net-h"></span></div></div>
   </div>
   <div class="panel"><div class="panel-h"><h2>Resmi / gayriresmi kırılımı</h2></div><div class="tw"><table class="defter" id="d-mali"><thead><tr><th>Defter</th><th class="num">Gelir</th><th class="num">Gider</th><th class="num">Net</th></tr></thead><tbody></tbody></table></div></div>
   <div class="panel"><div class="panel-h"><h2>Hareketler</h2><div class="tools">
@@ -656,26 +656,38 @@ function fnSil(id){if(!confirm('Bu hareket silinsin mi?'))return;D.fin=D.fin.fil
 ['#fn-ara','#fn-filtre','#fn-defter-f','#fn-oto','#fn-tum'].forEach(s=>$(s).addEventListener('input',cizFin));
 function cizFin(){const q=$('#fn-ara').value.toLowerCase(),f=$('#fn-filtre').value,df=$('#fn-defter-f').value,oto=$('#fn-oto').checked,tum=$('#fn-tum').checked,ay=ayim();
   const rows=D.fin.filter(o=>(tum||o.tarih.startsWith(ay))&&(!f||o.tur===f)&&(!df||o.defter===df||(df==='gayri'&&o.aktar>0))&&(oto||!o.oto)&&(!q||[o.kat,o.not,kuyuAd(o.kuyuId)].join(' ').toLowerCase().includes(q))).sort((a,b)=>a.tarih.localeCompare(b.tarih));
-  let tg=0,tx=0;$('#t-fn tbody').innerHTML=rows.length?rows.map(o=>{o.tur==='gelir'?tg+=o.tutar:tx+=o.tutar;return`<tr><td>${trh(o.tarih)}</td><td><span class="tag ${o.tur}">${o.tur==='gelir'?'Gelir':'Gider'}</span>${o.oto?' <span class="tag oto">oto</span>':''}</td><td>${turTag(o.defter)}${o.aktar>0?`<div class="hint">${TL(o.aktar)} → gayriresmi</div>`:''}</td><td>${esc(o.kat)}</td><td class="note">${esc(o.not)}</td><td>${esc(kuyuAd(o.kuyuId))}</td><td>${esc(o.odeme)}${acikMi(o)?' <span class="tag wip">açık</span>':''}</td><td>${{dahil:'Dahil',haric:'Hariç',yok:'—'}[o.kdv]||''}</td><td class="num">${o.tur==='gelir'?TL(o.tutar):''}</td><td class="num">${o.tur==='gider'?TL(o.tutar):''}</td>
+  let tg=0,tx=0,thg=0,thx=0;$('#t-fn tbody').innerHTML=rows.length?rows.map(o=>{const th=(o.odeme==='Alacak'||o.odeme==='Borç')?tahsilToplam(o):o.tutar;if(o.tur==='gelir'){tg+=o.tutar;thg+=th}else{tx+=o.tutar;thx+=th}return`<tr><td>${trh(o.tarih)}</td><td><span class="tag ${o.tur}">${o.tur==='gelir'?'Gelir':'Gider'}</span>${o.oto?' <span class="tag oto">oto</span>':''}</td><td>${turTag(o.defter)}${o.aktar>0?`<div class="hint">${TL(o.aktar)} → gayriresmi</div>`:''}</td><td>${esc(o.kat)}</td><td class="note">${esc(o.not)}</td><td>${esc(kuyuAd(o.kuyuId))}</td><td>${esc(o.odeme)}${(o.odeme==='Alacak'||o.odeme==='Borç')?`<div class="hint">${TL(th)} ${o.tur==='gelir'?'tahsil':'ödendi'}${acikMi(o)?' · <b>'+TL(o.tutar-th)+' açık</b>':' · kapandı'}</div>`:''}</td><td>${{dahil:'Dahil',haric:'Hariç',yok:'—'}[o.kdv]||''}</td><td class="num">${o.tur==='gelir'?TL(o.tutar):''}</td><td class="num">${o.tur==='gider'?TL(o.tutar):''}</td>
     <td class="no-print"><button class="btn s" onclick="fnDuzenle('${o.id}')">Düzenle</button> <button class="btn s d" onclick="fnSil('${o.id}')">Sil</button></td></tr>`}).join(''):'<tr><td colspan="11" class="empty">Bu dönemde hareket yok.</td></tr>';
-  $('#fn-tg').textContent=TL(tg);$('#fn-tx').textContent=TL(tx);const ayFin=D.fin.filter(o=>o.tarih.startsWith(ay));const t=toplam(ayFin);
-  $('#m-gelir').textContent=TL(t.g);$('#m-gider').textContent=TL(t.x);$('#m-net').textContent=TL(t.g-t.x);defterTablo('#d-mali',ayFin)}
+  $('#fn-tg').innerHTML=TL(tg)+(Math.abs(tg-thg)>0.005?`<div class="hint">${TL(thg)} tahsil · <b>${TL(tg-thg)} açık</b></div>`:'');
+  $('#fn-tx').innerHTML=TL(tx)+(Math.abs(tx-thx)>0.005?`<div class="hint">${TL(thx)} ödendi · <b>${TL(tx-thx)} açık</b></div>`:'');
+  const ayFin=D.fin.filter(o=>o.tarih.startsWith(ay));const t=toplam(ayFin);const n=tahsilOran(ayFin);
+  $('#m-gelir').textContent=TL(t.g);$('#m-gider').textContent=TL(t.x);$('#m-net').textContent=TL(t.g-t.x);
+  $('#m-gelir-h').innerHTML=n.acikG>0.005?`· ${TL(t.g-n.acikG)} tahsil, <b>${TL(n.acikG)} açık</b>`:'';
+  $('#m-gider-h').innerHTML=n.acikX>0.005?`· ${TL(t.x-n.acikX)} ödendi, <b>${TL(n.acikX)} açık</b>`:'';
+  $('#m-net-h').innerHTML=(n.acikG>0.005||n.acikX>0.005)?`· nakde dönen ${TL((t.g-n.acikG)-(t.x-n.acikX))}`:'';
+  defterTablo('#d-mali',ayFin)}
+/* Dönemdeki alacak/borç kayıtlarının henüz tahsil edilmemiş/ödenmemiş kısmı (defter payı oranında) */
+function tahsilOran(fin){let acikG=0,acikX=0;fin.forEach(o=>{if(o.odeme!=='Alacak'&&o.odeme!=='Borç')return;const acik=Math.max(0,o.tutar-tahsilToplam(o));if(!acik)return;o.tur==='gelir'?acikG+=acik:acikX+=acik});return{acikG,acikX}}
 
 /* ============ ALACAK / BORÇ ============ */
 $('#al-kapali').onchange=cizAlacak;
 function tahsilatEkle(id){const o=D.fin.find(x=>x.id===id);if(!o)return;const kalan=o.tutar-tahsilToplam(o);const s=prompt(`${o.tur==='gelir'?'Tahsilat':'Ödeme'} tutarı (kalan ${TL(kalan)}):`,kalan.toFixed(2).replace(/\.00$/,''));if(s===null)return;const t=+String(s).replace(',','.');if(!(t>0))return toast('Geçersiz tutar');
   const y=confirm('Nakit mi? (Tamam = Nakit, İptal = Havale/Banka)')?'Nakit':'Havale';(o.tahsilat=o.tahsilat||[]).push({tarih:bugun,tutar:Math.min(t,kalan),yontem:y});kaydet();cizHepsi();toast(y+' olarak işlendi')}
 function tahsilatSil(id,i){const o=D.fin.find(x=>x.id===id);if(!o)return;o.tahsilat.splice(i,1);kaydet();cizHepsi()}
-function cizAlacak(){const kapali=$('#al-kapali').checked;let aA=0,aV=0,bA=0,bV=0;
-  const satir=(o,gelir)=>{const th=tahsilToplam(o),kalan=o.tutar-th,gec=kalan>0.005&&o.vade&&o.vade<bugun;if(gelir){aA+=kalan;if(gec)aV+=kalan}else{bA+=kalan;if(gec)bV+=kalan}
+function cizAlacak(){const kapali=$('#al-kapali').checked;
+  /* Özet kutuları her zaman TÜM açık kayıtlardan hesaplanır (liste filtresinden bağımsız) */
+  let aA=0,aV=0,bA=0,bV=0;
+  D.fin.filter(acikMi).forEach(o=>{const kalan=o.tutar-tahsilToplam(o);const gec=o.vade&&o.vade<bugun;
+    if(o.odeme==='Alacak'){aA+=kalan;if(gec)aV+=kalan}else{bA+=kalan;if(gec)bV+=kalan}});
+  const satir=(o,gelir)=>{const th=tahsilToplam(o),kalan=o.tutar-th,gec=kalan>0.005&&o.vade&&o.vade<bugun;
     return`<tr><td>${trh(o.tarih)}</td><td>${gelir?esc(kuyuAd(o.kuyuId))||'—':esc(o.kat)}</td><td class="note">${esc(o.not)}</td><td>${o.vade?trh(o.vade)+(gec?' <span class="tag gider">gecikti</span>':''):'—'}</td><td class="num">${TL(o.tutar)}</td><td class="num">${TL(th)}</td><td class="num"><b>${TL(kalan)}</b>${kalan<=0.005?' <span class="tag ok">kapandı</span>':''}</td>
     <td class="note">${(o.tahsilat||[]).map((t,i)=>`${trh(t.tarih)} ${TL(t.tutar)} ${t.yontem} <button class="btn s no-print" onclick="tahsilatSil('${o.id}',${i})">✕</button>`).join('<br>')}</td>
     <td class="no-print">${kalan>0.005?`<button class="btn s p" onclick="tahsilatEkle('${o.id}')">${gelir?'Tahsilat gir':'Ödeme gir'}</button> `:''}<button class="btn s" onclick="fnDuzenle('${o.id}')">Düzenle</button></td></tr>`};
   const al=D.fin.filter(o=>o.odeme==='Alacak'&&(kapali||acikMi(o))).sort((a,b)=>(a.vade||a.tarih).localeCompare(b.vade||b.tarih)),bo=D.fin.filter(o=>o.odeme==='Borç'&&(kapali||acikMi(o))).sort((a,b)=>(a.vade||a.tarih).localeCompare(b.vade||b.tarih));
   $('#t-alacak tbody').innerHTML=al.map(o=>satir(o,true)).join('')||'<tr><td colspan="9" class="empty">Açık alacak yok.</td></tr>';
   $('#t-borc tbody').innerHTML=bo.map(o=>satir(o,false)).join('')||'<tr><td colspan="9" class="empty">Açık borç yok.</td></tr>';
-  if(!kapali){$('#a-alacak').textContent=TL(aA);$('#a-vade').textContent=TL(aV);$('#a-borc').textContent=TL(bA);$('#a-borcvade').textContent=TL(bV);$('#s-alacak').textContent=TL(aA);$('#s-borc').textContent=TL(bA)}
-  else{const a=D.fin.filter(acikMi);const x=a.filter(o=>o.tur==='gelir').reduce((s,o)=>s+o.tutar-tahsilToplam(o),0),y=a.filter(o=>o.tur==='gider').reduce((s,o)=>s+o.tutar-tahsilToplam(o),0);$('#s-alacak').textContent=TL(x);$('#s-borc').textContent=TL(y)}}
+  $('#a-alacak').textContent=TL(aA);$('#a-vade').textContent=TL(aV);$('#a-borc').textContent=TL(bA);$('#a-borcvade').textContent=TL(bV);
+  $('#s-alacak').textContent=TL(aA);$('#s-borc').textContent=TL(bA)}
 
 /* ============ PERSONEL ============ */
 function peTemizle(){$('#f-per').reset();$('#pe-id').value='';$('#pe-kaydet').textContent='Kaydet';$('#pe-iptal').style.display='none'}$('#pe-iptal').onclick=peTemizle;
