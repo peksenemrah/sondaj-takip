@@ -408,9 +408,25 @@ table.sub tr.kat td{background:var(--line2);font-weight:600}
   <div class="panel"><div class="panel-h"><h2>Dönem arşivi</h2><span class="hint" id="ar-donem"></span></div>
     <p>Dönemi kapatınca <b>iş günleri, gelir/gider, tahsilat ve ödemeler, personel ödemeleri, bakım ve stok hareketleri</b> arşive taşınır ve sıfırlanır. <b>Personel, makineler, stok kalemleri, kategoriler ve firma ayarları</b> olduğu gibi kalır.</p>
     <div class="tools"><button class="btn p" onclick="arsivAc()">Arşivle ve yeni döneme geç</button></div>
+    <div id="ar-geri" style="margin-top:12px"></div>
     <div id="ar-liste" style="margin-top:14px"></div></div>
+  <div class="panel"><div class="panel-h"><h2>Arşiv güvenlik şifresi</h2><span class="hint">Arşivleme ve geri alma bu şifreyi ister.</span></div>
+    <form class="form" id="f-sifre" autocomplete="off">
+      <div class="f c3"><label>Mevcut şifre</label><input type="password" id="sf-eski" inputmode="numeric"></div>
+      <div class="f c3"><label>Yeni şifre (en az 4 hane)</label><input type="password" id="sf-yeni" inputmode="numeric"></div>
+      <div class="f c3"><label>Yeni şifre (tekrar)</label><input type="password" id="sf-yeni2" inputmode="numeric"></div>
+      <div class="actions"><button type="submit" class="btn p">Şifreyi değiştir</button></div></form>
+    <p class="hint">Şifre bu hesabın verisiyle birlikte saklanır ve tüm cihazlarınızda geçerlidir. Unutursanız sıfırlanamaz; yedeğinizi saklayın.</p></div>
   <div id="ar-detay"></div>
 </section>
+
+<div class="modal" id="sifre-modal"><div class="box" style="max-width:380px">
+  <h2 style="margin:0" id="sf-baslik">Güvenlik şifresi</h2>
+  <p class="hint" id="sf-aciklama" style="margin:0"></p>
+  <input type="password" id="sf-giris" inputmode="numeric" autocomplete="off" placeholder="Şifre">
+  <div class="hint kalan-p" id="sf-hata" style="display:none"><b>Şifre yanlış.</b> Tekrar deneyin.</div>
+  <div class="actions" style="justify-content:space-between"><button class="btn" onclick="sifreIptal()">Vazgeç</button><button class="btn p" onclick="sifreOnay()">Onayla</button></div>
+</div></div>
 
 <div class="modal" id="arsiv-modal"><div class="box genis">
   <h2 style="margin:0">Arşivle ve yeni döneme geç</h2>
@@ -424,6 +440,7 @@ table.sub tr.kat td{background:var(--line2);font-weight:600}
   <label class="chk"><input type="checkbox" id="ar-stok" checked> Stok bakiyeleri "devir" girişi olarak yeni döneme aktarılsın</label>
   <label class="chk"><input type="checkbox" id="ar-json" checked> Dönemin tam JSON yedeği indirilsin (fotoğraflar dahil)</label>
   <label class="chk"><input type="checkbox" id="ar-pdf" checked> Tek sayfalık dönem özeti PDF'i oluşturulsun</label>
+  <p class="hint" style="margin:6px 0 0">Onayladıktan sonra güvenlik şifresi sorulacak. Yanlışlıkla arşivlerseniz Arşiv sekmesindeki <b>"Son arşivlemeyi geri al"</b> düğmesiyle geri dönebilirsiniz.</p>
   <div class="actions" style="justify-content:space-between"><button class="btn" onclick="$('#arsiv-modal').classList.remove('on')">Vazgeç</button><button class="btn p" onclick="arsivleVeSifirla()">Arşivle ve sıfırla</button></div>
 </div></div>
 
@@ -502,7 +519,7 @@ document.addEventListener('DOMContentLoaded',()=>{$('#f-fb').onsubmit=e=>{e.prev
 /* ============ Veri ============ */
 const KEY='sondaj_takip_v2',ESKI='sondaj_takip_v1';
 const varsayilanKat={gelir:['Sondaj bedeli','Pompa/montaj','Boru/malzeme satışı','Avans','Diğer gelir'],gider:['Yakıt (mazot)','Personel/yevmiye','Boru ve malzeme','Bakım/onarım','Yedek parça','Nakliye','Yemek/konaklama','Vergi/harç','Diğer gider']};
-const bos=()=>({kuyular:[],isler:[],fin:[],personel:[],makineler:[],bakim:[],teklifler:[],stok:[],stokHar:[],perOdeme:[],arsiv:[],kat:JSON.parse(JSON.stringify(varsayilanKat)),ayar:{kdv:20,nakit:0,banka:0,otoYev:1,otoYak:1}});
+const bos=()=>({kuyular:[],isler:[],fin:[],personel:[],makineler:[],bakim:[],teklifler:[],stok:[],stokHar:[],perOdeme:[],arsiv:[],kat:JSON.parse(JSON.stringify(varsayilanKat)),ayar:{kdv:20,nakit:0,banka:0,otoYev:1,otoYak:1,arsivSifre:'2504'},geriAl:null});
 let D;
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
@@ -520,7 +537,9 @@ const per=id=>D.personel.find(p=>p.id===id);const perAd=ids=>(ids||[]).map(i=>(p
 const turTag=t=>t==='gayri'?'<span class="tag gayri">Gayriresmi</span>':'<span class="tag resmi">Resmi</span>';
 const durumTag=o=>o.durum==='tamam'?'<span class="tag ok">Tamamlandı</span>':'<span class="tag wip">Devam</span>';
 const kaydet=()=>{if(D.stokHar)D.stokHar=D.stokHar.filter(h=>!h.oto||D.isler.some(j=>j.id===h.isId));D._ts=Date.now();D._cid=CID;try{localStorage.setItem(KEY,JSON.stringify(D))}catch(e){alert('Depolama dolu. Kuyu fotoğraflarını azaltın veya yedek alıp temizleyin.')}depoBilgi();fbGonder()};
-function normalize(v){const d=Object.assign(bos(),v);(d.personel||[]).forEach(p=>p.tip='metre');d.ayar=Object.assign(bos().ayar,v.ayar||{});d.kat=Object.assign(bos().kat,v.kat||{});['kuyular','isler','fin','personel','makineler','bakim','teklifler','stok','stokHar','perOdeme','arsiv'].forEach(k=>{if(!Array.isArray(d[k]))d[k]=Object.values(d[k]||{})});d.arsiv.forEach(a=>{if(a.veri)['kuyular','isler','fin','perOdeme','bakim','stokHar','teklifler'].forEach(k=>{if(!Array.isArray(a.veri[k]))a.veri[k]=Object.values(a.veri[k]||{})})});d.fin.forEach(f=>{if(f.oto&&f.perId)f.odeme='Tahakkuk'});d.kuyular.forEach(k=>{if(!k.teknik||typeof k.teknik!=='object')k.teknik={}});
+function normalize(v){const d=Object.assign(bos(),v);(d.personel||[]).forEach(p=>p.tip='metre');d.ayar=Object.assign(bos().ayar,v.ayar||{});d.kat=Object.assign(bos().kat,v.kat||{});['kuyular','isler','fin','personel','makineler','bakim','teklifler','stok','stokHar','perOdeme','arsiv'].forEach(k=>{if(!Array.isArray(d[k]))d[k]=Object.values(d[k]||{})});d.arsiv.forEach(a=>{if(a.veri)['kuyular','isler','fin','perOdeme','bakim','stokHar','teklifler'].forEach(k=>{if(!Array.isArray(a.veri[k]))a.veri[k]=Object.values(a.veri[k]||{})})});
+  if(!d.ayar.arsivSifre)d.ayar.arsivSifre='2504';
+  if(d.geriAl&&d.geriAl.veri)['kuyular','isler','fin','perOdeme','bakim','stokHar','teklifler'].forEach(k=>{if(!Array.isArray(d.geriAl.veri[k]))d.geriAl.veri[k]=Object.values(d.geriAl.veri[k]||{})});else if(!d.geriAl)d.geriAl=null;d.fin.forEach(f=>{if(f.oto&&f.perId)f.odeme='Tahakkuk'});d.kuyular.forEach(k=>{if(!k.teknik||typeof k.teknik!=='object')k.teknik={}});
   d.kuyular.forEach(k=>{k.foto=Array.isArray(k.foto)?k.foto:Object.values(k.foto||{})});d.isler.forEach(j=>{j.personel=Array.isArray(j.personel)?j.personel:Object.values(j.personel||{})});d.fin.forEach(f=>{f.tahsilat=Array.isArray(f.tahsilat)?f.tahsilat:Object.values(f.tahsilat||{})});d.personel.forEach(p=>{if(!p.tip)p.tip='gun'});return d}
 function depoBilgi(){const b=new Blob([JSON.stringify(D)]).size;const el=$('#depo');if(el)el.textContent='Kullanılan depolama: '+(b/1024).toLocaleString('tr-TR',{maximumFractionDigits:0})+' KB (tarayıcı sınırı ~5.000 KB)'}
 
@@ -1099,6 +1118,25 @@ if(window.matchMedia&&matchMedia('(display-mode: standalone)').matches){setTimeo
 window.addEventListener('offline',()=>{bulutDurum('err','çevrimdışı · cihazda kayıtlı');toast('İnternet yok – kayıtlar cihazda tutuluyor')});
 window.addEventListener('online',()=>{toast('Bağlantı geldi – eşitleniyor');if(typeof fbRef!=='undefined'&&fbRef&&fbUser)fbGonder();else if(fbCfg())bulutDurum('','giriş yapılmadı')});
 
+/* ================= GÜVENLİK ŞİFRESİ ================= */
+const arsivSifresi=()=>String((D.ayar&&D.ayar.arsivSifre)||'2504');
+let sifreCoz=null;
+function sifreSor(baslik,aciklama){
+  return new Promise(res=>{sifreCoz=res;$('#sf-baslik').textContent=baslik;$('#sf-aciklama').textContent=aciklama||'';
+    $('#sf-giris').value='';$('#sf-hata').style.display='none';$('#sifre-modal').classList.add('on');setTimeout(()=>$('#sf-giris').focus(),60)})}
+function sifreOnay(){const v=$('#sf-giris').value.trim();
+  if(v!==arsivSifresi()){$('#sf-hata').style.display='';$('#sf-giris').value='';$('#sf-giris').focus();return}
+  $('#sifre-modal').classList.remove('on');const f=sifreCoz;sifreCoz=null;if(f)f(true)}
+function sifreIptal(){$('#sifre-modal').classList.remove('on');const f=sifreCoz;sifreCoz=null;if(f)f(false)}
+$('#sf-giris').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();sifreOnay()}if(e.key==='Escape')sifreIptal()});
+$('#sifre-modal').addEventListener('click',e=>{if(e.target.id==='sifre-modal')sifreIptal()});
+$('#f-sifre').onsubmit=e=>{e.preventDefault();
+  if($('#sf-eski').value.trim()!==arsivSifresi())return toast('Mevcut şifre yanlış');
+  const y=$('#sf-yeni').value.trim();
+  if(y.length<4)return toast('Yeni şifre en az 4 hane olmalı');
+  if(y!==$('#sf-yeni2').value.trim())return toast('Yeni şifreler aynı değil');
+  D.ayar.arsivSifre=y;kaydet();$('#f-sifre').reset();toast('Arşiv şifresi değiştirildi')};
+
 /* ================= DÖNEM ARŞİVİ ================= */
 /* Arşiv özeti: sıfırlamadan ÖNCE, mevcut mali verilerden hesaplanır */
 function arsivOzet(){
@@ -1134,15 +1172,21 @@ function arsivAc(){
     ${z.acikG>0.005?`<span>Açık alacak: <b class="kalan-p">${TL(z.acikG)}</b></span>`:''}${z.acikX>0.005?`<span>Açık borç: <b class="kalan-p">${TL(z.acikX)}</b></span>`:''}</div></div>`;
   $('#arsiv-modal').classList.add('on');$('#ar-ad').focus()}
 
-function arsivleVeSifirla(){
+async function arsivleVeSifirla(){
   const ad=$('#ar-ad').value.trim();if(!ad)return toast('Dönem adı girin');
   const o={kasa:$('#ar-kasa').checked,alacak:$('#ar-alacak').checked,kuyu:$('#ar-kuyu').checked,teklif:$('#ar-teklif').checked,stok:$('#ar-stok').checked};
   if(!confirm('"'+ad+'" dönemi arşivlenecek ve tüm mali kayıtlar sıfırlanacak.\n\nPersonel, makineler, stok kalemleri, kategoriler ve firma ayarları korunur.\n\nDevam edilsin mi?'))return;
+  if(!await sifreSor('Arşivleme şifresi','"'+ad+'" dönemini kapatmak için güvenlik şifresini girin.'))return toast('Arşivleme iptal edildi');
   const ozet=arsivOzet();
   /* Tam yedek (fotoğraflar dahil) — arşiv kaydına fotoğraf konmaz, depolama dolmasın */
   if($('#ar-json').checked)indirBlob('arsiv_'+ad.replace(/[^\wÇĞİÖŞÜçğıöşü-]+/g,'_')+'_'+bugun+'.json',new Blob([JSON.stringify(D,null,2)],{type:'application/json'}));
   const kopya=x=>JSON.parse(JSON.stringify(x||[]));
-  const kayit={id:uid(),ad,tarih:bugun,bas:ozet.bas,bit:ozet.bit,ozet,devirSec:o,
+  const arsivId=uid();
+  /* Geri alma kutusu: arşivleme öncesi tam durum (yalnızca son arşivleme için saklanır) */
+  D.geriAl={arsivId,ad,tarih:bugun,zaman:new Date().toLocaleString('tr-TR'),
+    veri:{kuyular:kopya(D.kuyular),isler:kopya(D.isler),fin:kopya(D.fin),perOdeme:kopya(D.perOdeme),bakim:kopya(D.bakim),stokHar:kopya(D.stokHar),teklifler:kopya(D.teklifler)},
+    ayar:{nakit:D.ayar.nakit,banka:D.ayar.banka,donem:D.ayar.donem||'',donemBas:D.ayar.donemBas||''}};
+  const kayit={id:arsivId,ad,tarih:bugun,bas:ozet.bas,bit:ozet.bit,ozet,devirSec:o,
     veri:{kuyular:kopya(D.kuyular).map(k=>Object.assign({},k,{foto:[],fotoSayi:(k.foto||[]).length})),
       isler:kopya(D.isler),fin:kopya(D.fin),perOdeme:kopya(D.perOdeme),bakim:kopya(D.bakim),stokHar:kopya(D.stokHar),teklifler:kopya(D.teklifler),
       personel:D.personel.map(p=>({id:p.id,ad:p.ad,yevmiye:p.yevmiye})),makineler:D.makineler.map(m=>({id:m.id,ad:m.ad})),stok:(D.stok||[]).map(x=>({id:x.id,ad:x.ad,birim:x.birim}))}};
@@ -1167,10 +1211,45 @@ function arsivleVeSifirla(){
   D.fin=devirFin;D.stokHar=devirStok;D.teklifler=devirTeklif;D.kuyular=devirKuyu;
   D.ayar.nakit=o.kasa?Math.round(b.nakit*100)/100:0;D.ayar.banka=o.kasa?Math.round(b.banka*100)/100:0;
   D.ayar.donem=ad;D.ayar.donemBas=bugun;
+  const dd=depoKucult();
   try{kaydet()}catch(e){console.error(e)}
   $('#arsiv-modal').classList.remove('on');hepsiniCiz();sekme('arsiv');
   toast('"'+ad+'" arşivlendi · yeni dönem başladı');
+  if(dd==='fotosuz')setTimeout(()=>alert('Depolama sınırı nedeniyle geri alma kutusundaki kuyu fotoğrafları saklanamadı. Geri alırsanız fotoğraflar dışındaki her şey geri gelir; fotoğraflar için indirilen JSON yedeğini kullanın.'),400);
+  if(dd==='geriAlsiz')setTimeout(()=>alert('Depolama dolduğu için "geri al" kutusu saklanamadı. Yanlışlık olursa indirilen JSON yedeğini Ayarlar → "Yedekten geri yükle" ile açın.'),400);
   if($('#ar-pdf').checked)arsivPdf(kayit.id)}
+
+/* ---- Depolama sınırı: geri al kutusunu gerekirse küçült ---- */
+function depoKucult(){
+  const boy=()=>JSON.stringify(D).length;
+  if(boy()<4200000)return 'tam';
+  if(D.geriAl&&D.geriAl.veri&&D.geriAl.veri.kuyular){D.geriAl.veri.kuyular.forEach(k=>k.foto=[]);D.geriAl.fotosuz=true;if(boy()<4600000)return 'fotosuz'}
+  D.geriAl=null;return 'geriAlsiz'}
+
+/* ---- Son arşivlemeyi geri alma ---- */
+function cizGeriAl(){
+  const el=$('#ar-geri');if(!el)return;const g=D.geriAl;
+  if(!g)return el.innerHTML='';
+  const yeniKayit=D.isler.length+D.fin.filter(f=>!f.devir).length+(D.perOdeme||[]).length+(D.bakim||[]).length;
+  el.innerHTML=`<div class="banner no-print" style="display:flex"><span><b>"${esc(g.ad)}"</b> arşivlemesi geri alınabilir · ${esc(g.zaman)}${g.fotosuz?' · <span class="hint">fotoğraflar hariç</span>':''}${yeniKayit?` · <b class="kalan-p">arşivden sonra girilen ${yeniKayit} kayıt silinir</b>`:''}</span>
+    <span><button class="btn s p" onclick="arsivGeriAl()">Son arşivlemeyi geri al</button> <button class="btn s" onclick="geriAlVazgec()">Kutuyu kapat</button></span></div>`}
+
+function geriAlVazgec(){if(!D.geriAl)return;if(!confirm('Geri alma kutusu kapatılsın mı? Bundan sonra bu arşivleme geri alınamaz.'))return;D.geriAl=null;kaydet();cizGeriAl();toast('Geri alma kutusu kapatıldı')}
+
+async function arsivGeriAl(){
+  const g=D.geriAl;if(!g)return toast('Geri alınabilir arşivleme yok');
+  const yeniKayit=D.isler.length+D.fin.filter(f=>!f.devir).length+(D.perOdeme||[]).length+(D.bakim||[]).length;
+  let m='"'+g.ad+'" arşivlemesi geri alınacak.\n\nArşivlenen tüm kayıtlar geri gelecek, bu arşiv kaydı silinecek.';
+  if(yeniKayit)m+='\n\nDİKKAT: Arşivlemeden sonra girdiğiniz '+yeniKayit+' kayıt SİLİNECEK.';
+  if(g.fotosuz)m+='\n\nNot: Kuyu fotoğrafları geri alma kutusunda saklanamamıştı, geri gelmeyecek.';
+  if(!confirm(m+'\n\nDevam edilsin mi?'))return;
+  if(!await sifreSor('Geri alma şifresi','Arşivlemeyi geri almak için güvenlik şifresini girin.'))return toast('Geri alma iptal edildi');
+  const v=g.veri||{};
+  D.kuyular=v.kuyular||[];D.isler=v.isler||[];D.fin=v.fin||[];D.perOdeme=v.perOdeme||[];D.bakim=v.bakim||[];D.stokHar=v.stokHar||[];D.teklifler=v.teklifler||[];
+  D.ayar.nakit=g.ayar.nakit;D.ayar.banka=g.ayar.banka;D.ayar.donem=g.ayar.donem;D.ayar.donemBas=g.ayar.donemBas;
+  D.arsiv=(D.arsiv||[]).filter(a=>a.id!==g.arsivId);
+  D.geriAl=null;kaydet();hepsiniCiz();sekme('arsiv');
+  toast('"'+g.ad+'" arşivlemesi geri alındı')}
 
 /* ---- Arşiv listesi ve detayı ---- */
 function arsivBul(id){return(D.arsiv||[]).find(a=>a.id===id)}
@@ -1180,9 +1259,11 @@ function cizArsiv(){
   el.innerHTML=(D.arsiv||[]).map(a=>{const z=a.ozet||{};return`<div class="ar-kart"><h3>${esc(a.ad)}</h3>
     <div class="ar-sat"><span>${z.bas?trh(z.bas):'—'} – ${z.bit?trh(z.bit):'—'}</span><span>Arşiv: ${trh(a.tarih)}</span><span>İş günü: <b>${z.gun||0}</b></span><span>Derinlik: <b>${(z.metraj||0).toLocaleString('tr-TR')} m</b></span>
       <span>Gelir: <b>${TL(z.g)}</b></span><span>Gider: <b>${TL(z.x)}</b></span><span>Net: <b>${TL((z.g||0)-(z.x||0))}</b></span>${z.acikG>0.005?`<span>Açık alacak: <b>${TL(z.acikG)}</b></span>`:''}</div>
-    <div class="tools"><button class="btn s p" onclick="arsivDetay('${a.id}')">Ayrıntılar</button><button class="btn s" onclick="arsivPdf('${a.id}')">PDF raporu</button><button class="btn s" onclick="arsivYazdir('${a.id}')">Yazdır</button><button class="btn s" onclick="arsivJson('${a.id}')">JSON indir</button><button class="btn s d" onclick="arsivSil('${a.id}')">Sil</button></div></div>`}).join('')
+    <div class="tools">${D.geriAl&&D.geriAl.arsivId===a.id?`<button class="btn s" onclick="arsivGeriAl()">Geri al</button>`:''}<button class="btn s p" onclick="arsivDetay('${a.id}')">Ayrıntılar</button><button class="btn s" onclick="arsivPdf('${a.id}')">PDF raporu</button><button class="btn s" onclick="arsivYazdir('${a.id}')">Yazdır</button><button class="btn s" onclick="arsivJson('${a.id}')">JSON indir</button><button class="btn s d" onclick="arsivSil('${a.id}')">Sil</button></div></div>`}).join('')
     ||'<div class="empty">Henüz arşivlenmiş dönem yok.</div>'}
-function arsivSil(id){const a=arsivBul(id);if(!a)return;if(!confirm('"'+a.ad+'" arşivi silinsin mi? Bu işlem geri alınamaz.'))return;D.arsiv=D.arsiv.filter(x=>x.id!==id);kaydet();cizArsiv();$('#ar-detay').innerHTML='';toast('Arşiv silindi')}
+async function arsivSil(id){const a=arsivBul(id);if(!a)return;if(!confirm('"'+a.ad+'" arşivi silinsin mi? Bu işlem geri alınamaz.'))return;
+  if(!await sifreSor('Arşiv silme şifresi','"'+a.ad+'" arşivini silmek için güvenlik şifresini girin.'))return toast('Silme iptal edildi');
+  D.arsiv=D.arsiv.filter(x=>x.id!==id);if(D.geriAl&&D.geriAl.arsivId===id)D.geriAl=null;kaydet();cizArsiv();cizGeriAl();$('#ar-detay').innerHTML='';toast('Arşiv silindi')}
 function arsivJson(id){const a=arsivBul(id);if(!a)return;indirBlob('arsiv_'+a.ad.replace(/[^\wÇĞİÖŞÜçğıöşü-]+/g,'_')+'.json',new Blob([JSON.stringify(a,null,2)],{type:'application/json'}))}
 function arsivDetay(id){
   const a=arsivBul(id);if(!a)return;const z=a.ozet||{},v=a.veri||{};
@@ -1263,7 +1344,7 @@ async function arsivPdf(id){
 
 function cizHepsi(){[$('#is-kuyu'),$('#sh-kuyu')].forEach(s=>kuyuSecDoldur(s));kuyuSecDoldur($('#fn-kuyu'),'— Seçilmedi —');makSecDoldur($('#is-mak'),'makine');makSecDoldur($('#is-komp'),'komp');makSecDoldur($('#sh-mak'),'makine');makSecDoldur($('#sh-komp'),'komp');
   if(!$('#is-id').value)perChk($('#is-personel'));if(!$('#sh-personel').children.length||!$('#sh-personel').querySelector('input:checked'))perChk($('#sh-personel'));
-  cizIsler();cizFin();cizAlacak();cizPersonel();cizPerCari();cizTeklif();cizStok();stokUyari();if(harita&&$('#ku-harita').style.display!=='none')haritaCiz();cizMakine();cizOzet();cizKuyular();cizArsiv();katListe();raporKatDoldur();yedekUyari();depoBilgi();if($('#r-out').querySelector('table,.stat'))raporOlustur();if($('#ku-detay').style.display!=='none'&&$('#ku-detay').querySelector('h2')){const m=$('#ku-detay').innerHTML.match(/kuDuzenle\('([^']+)'\)/);if(m&&kuyu(m[1]))kuDetay(m[1]);else $('#ku-detay').style.display='none'}}
+  cizIsler();cizFin();cizAlacak();cizPersonel();cizPerCari();cizTeklif();cizStok();stokUyari();if(harita&&$('#ku-harita').style.display!=='none')haritaCiz();cizMakine();cizOzet();cizKuyular();cizArsiv();cizGeriAl();katListe();raporKatDoldur();yedekUyari();depoBilgi();if($('#r-out').querySelector('table,.stat'))raporOlustur();if($('#ku-detay').style.display!=='none'&&$('#ku-detay').querySelector('h2')){const m=$('#ku-detay').innerHTML.match(/kuDuzenle\('([^']+)'\)/);if(m&&kuyu(m[1]))kuDetay(m[1]);else $('#ku-detay').style.display='none'}}
 function hepsiniCiz(){isTemizle();fnTemizle();kuTemizle();peTemizle();mkTemizle();bkTemizle();tkTemizle();skTemizle();poTemizle();$('#sh-tarih').value=bugun;ayarDoldur();cizHepsi()}
 yukle();hepsiniCiz();fbBaslat();
 </script>

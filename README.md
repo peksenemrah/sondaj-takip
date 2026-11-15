@@ -121,6 +121,18 @@ Makine/kompresör kartları (bidon litresi + mazot fiyatı). Bakım/arıza kayı
 - **Arşivlenmiş dönem kartları:** Ayrıntılar (tam döküm), PDF raporu, Yazdır, JSON indir, Sil.
 - Arşiv kayıtlarında kuyu fotoğrafları saklanmaz (depolama sınırı); tam kopya için arşivleme sırasında inen JSON yedeği kullanılır.
 
+#### Güvenlik şifresi
+- Arşivleme, geri alma ve arşiv silme işlemleri **güvenlik şifresi** ister. Başlangıç şifresi **2504**.
+- Şifre Arşiv sekmesindeki **"Arşiv güvenlik şifresi"** bölümünden değiştirilir: mevcut şifre + yeni şifre (en az 4 hane) iki kez.
+- Şifre hesap verisiyle birlikte saklandığı için buluta bağlı tüm cihazlarda aynıdır. Unutulursa sıfırlanamaz; JSON yedeğinde `ayar.arsivSifre` alanından okunabilir.
+
+#### Son arşivlemeyi geri al
+- Her arşivleme öncesinde tam durum bir **geri alma kutusuna** yazılır (kuyular, iş günleri, gelir/gider, personel ödemeleri, bakım, stok hareketleri, teklifler + kasa/banka ve dönem bilgisi).
+- Arşiv sekmesinin üstünde **"Son arşivlemeyi geri al"** bandı çıkar; şifre girildiğinde arşivlenen her şey geri gelir ve o arşiv kaydı silinir.
+- Arşivlemeden sonra yeni kayıt girdiyseniz band bunu sayı olarak uyarır; geri alma bu yeni kayıtları siler.
+- Yalnızca **son** arşivleme geri alınabilir; yeni bir arşivleme kutunun üzerine yazar. **"Kutuyu kapat"** ile geri alma hakkı bilinçli olarak bırakılır.
+- Depolama sınırına yaklaşılırsa kutudan önce fotoğraflar, gerekirse kutunun tamamı düşürülür ve uyarı verilir (bu durumda JSON yedeği kullanılır).
+
 ### Ayarlar
 **Arşivle ve sıfırla (yeni dönem)** düğmesi buradan da çalışır. Ayrıca: telefona uygulama olarak kurma; firma bilgileri (rapor/teklif/fatura başlığı); KDV oranı; kasa/banka açılış bakiyesi; otomatik yakıt gideri ve otomatik personel hak edişi anahtarları; tüm verileri Excel'e aktarma (teklif, stok, stok hareketleri ve personel ödemeleri sayfaları dahil); **Hareket listesi içe aktar (ekler)**; bulut yapılandırması; JSON yedek al / geri yükle. 7 günden eski yedekte uyarı.
 
@@ -213,6 +225,11 @@ Kalan tahsilat artık fiilen alınan paraya göre hesaplanıyor; kuyu sayfasına
 ### Güncelleme — Metre bazlı personel ücreti
 Günlük yevmiye kaldırıldı; hak ediş = eklenen inkişaf boru metresi × metre ücreti. Hak ediş dökümü, rapor ve Excel sütunları buna göre yenilendi.
 
+### v4.1 — Arşiv güvenliği
+- Arşivleme, geri alma ve arşiv silme için **güvenlik şifresi** (başlangıç: 2504), Arşiv sekmesinden değiştirilebilir.
+- **Son arşivlemeyi geri al**: yanlış arşivleme veya vazgeçme durumunda dönemi tek düğmeyle geri açar; arşiv kaydını siler.
+- Geri alma kutusu depolama sınırına göre küçültülür; "Kutuyu kapat" ile kalıcı hale getirilir.
+
 ### v4 — Dönem arşivi
 - **Arşiv** sekmesi ve **Arşivle ve sıfırla** akışı; seçilebilir devir kalemleri.
 - Tek sayfalık (A4 yatay) dönem özeti PDF'i: iş günü, derinlik, gelir/gider/net, nakit akışı ve kapanış bakiyesi, defter kırılımı, gider kategorileri, personel ve kuyu tablosu.
@@ -235,8 +252,9 @@ Günlük yevmiye kaldırıldı; hak ediş = eklenen inkişaf boru metresi × met
 1. Açık alacak/borçlara son tahsilat ve ödemeleri gir.
 2. Stok sayımını yap, farkları Stok sekmesinden giriş/çıkış olarak işle.
 3. Raporlar → Tarih aralığı özeti ile dönemi gözden geçir.
-4. Arşiv → **Arşivle ve yeni döneme geç**: dönem adını yaz, devredilecekleri seç, onayla.
+4. Arşiv → **Arşivle ve yeni döneme geç**: dönem adını yaz, devredilecekleri seç, onayla, güvenlik şifresini gir.
 5. İnen JSON yedeğini ve PDF özetini güvenli bir yere (ör. Drive) kopyala.
+6. Yeni dönemin açılış rakamlarını kontrol et. Bir hata varsa, yeni kayıt girmeden önce **"Son arşivlemeyi geri al"** ile dönemi geri aç; doğruysa **"Kutuyu kapat"** ile geri alma kutusunu kapat.
 
 ---
 

@@ -1,5 +1,5 @@
 /* Sondaj İş Takip – çevrimdışı önbellek */
-const SURUM='sondaj-v5';
+const SURUM='sondaj-v6';
 const TEMEL=['./','./index.html','./manifest.webmanifest','./zirve-192.png','./zirve-512.png','./zirve-maskable-512.png'];
 const CDN=/^https:\/\/(cdnjs\.cloudflare\.com|www\.gstatic\.com\/firebasejs|fonts\.googleapis\.com|fonts\.gstatic\.com|[abc]\.tile\.openstreetmap\.org)\//;
 self.addEventListener('install',e=>{e.waitUntil(caches.open(SURUM).then(c=>c.addAll(TEMEL.map(u=>new Request(u,{cache:'reload'})))).then(()=>self.skipWaiting()))});
