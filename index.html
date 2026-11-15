@@ -96,6 +96,12 @@ table.sub tr.kat td{background:var(--line2);font-weight:600}
 .modal{position:fixed;inset:0;background:rgba(20,30,40,.55);display:none;align-items:center;justify-content:center;z-index:60;padding:16px}.modal.on{display:flex}
 .modal .box{background:#fff;border-radius:8px;padding:20px;width:100%;max-width:420px;display:flex;flex-direction:column;gap:10px}
 .modal input{border:1px solid var(--line);border-radius:var(--r);padding:10px}
+.modal label.chk{display:flex;align-items:flex-start;gap:9px;font-size:14px;line-height:1.35;cursor:pointer}
+.modal label.chk input{border:0;padding:0;width:auto;margin:2px 0 0;flex:0 0 auto}
+.modal .box.genis{max-width:560px;max-height:88vh;overflow:auto}
+.ar-kart{border:1px solid var(--line);border-radius:var(--r);padding:12px 14px;margin-bottom:10px;background:#fff}
+.ar-kart h3{margin:0 0 4px;font-size:16px}.ar-kart .ar-sat{display:flex;flex-wrap:wrap;gap:14px;font-size:13px;color:var(--mut);margin:6px 0 10px}
+.ar-kart .ar-sat b{color:var(--ink)}
 .detay{grid-column:span 12}
 @media print{.top,.no-print,.tools,.banner{display:none!important}main{max-width:none;padding:0}.panel{border:0;padding:0}table{min-width:0;font-size:11px}th,td{padding:3px 5px}body{background:#fff}}
 #ku-harita{height:440px;border-radius:6px;border:1px solid var(--line);margin-bottom:12px;z-index:1}
@@ -113,7 +119,7 @@ table.sub tr.kat td{background:var(--line2);font-weight:600}
   <nav class="tabs" id="tabs">
     <button class="on" data-v="ozet">Özet</button><button data-v="saha">Saha</button><button data-v="kuyular">Kuyular</button><button data-v="teklif">Teklifler</button><button data-v="isler">İşler</button>
     <button data-v="mali">Gelir / Gider</button><button data-v="alacak">Alacak / Borç</button><button data-v="personel">Personel</button><button data-v="makine">Makineler</button><button data-v="stok">Stok</button>
-    <button data-v="rapor">Raporlar</button><button data-v="ayar">Ayarlar</button>
+    <button data-v="rapor">Raporlar</button><button data-v="arsiv">Arşiv</button><button data-v="ayar">Ayarlar</button>
   </nav>
 </div>
 <main>
@@ -397,6 +403,30 @@ table.sub tr.kat td{background:var(--line2);font-weight:600}
 </section>
 
 <!-- AYARLAR -->
+<!-- ARŞİV -->
+<section class="view" id="v-arsiv">
+  <div class="panel"><div class="panel-h"><h2>Dönem arşivi</h2><span class="hint" id="ar-donem"></span></div>
+    <p>Dönemi kapatınca <b>iş günleri, gelir/gider, tahsilat ve ödemeler, personel ödemeleri, bakım ve stok hareketleri</b> arşive taşınır ve sıfırlanır. <b>Personel, makineler, stok kalemleri, kategoriler ve firma ayarları</b> olduğu gibi kalır.</p>
+    <div class="tools"><button class="btn p" onclick="arsivAc()">Arşivle ve yeni döneme geç</button></div>
+    <div id="ar-liste" style="margin-top:14px"></div></div>
+  <div id="ar-detay"></div>
+</section>
+
+<div class="modal" id="arsiv-modal"><div class="box genis">
+  <h2 style="margin:0">Arşivle ve yeni döneme geç</h2>
+  <div id="ar-ozet"></div>
+  <div class="f"><label for="ar-ad">Dönem adı</label><input id="ar-ad" placeholder="ör. 2026 Sezonu"></div>
+  <div class="hint" style="margin-top:4px"><b>Yeni döneme devredilecekler</b> (işaretli olanlar sıfırlanmaz):</div>
+  <label class="chk"><input type="checkbox" id="ar-kasa" checked> Kasa ve banka kapanış bakiyesi yeni dönemin açılış bakiyesi olsun</label>
+  <label class="chk"><input type="checkbox" id="ar-alacak" checked> Açık alacak ve borçlar kalan tutarıyla devredilsin</label>
+  <label class="chk"><input type="checkbox" id="ar-kuyu" checked> Tamamlanmamış kuyular devredilsin (derinlik ve tahsilat geçmişi korunur)</label>
+  <label class="chk"><input type="checkbox" id="ar-teklif" checked> Bekleyen teklifler devredilsin</label>
+  <label class="chk"><input type="checkbox" id="ar-stok" checked> Stok bakiyeleri "devir" girişi olarak yeni döneme aktarılsın</label>
+  <label class="chk"><input type="checkbox" id="ar-json" checked> Dönemin tam JSON yedeği indirilsin (fotoğraflar dahil)</label>
+  <label class="chk"><input type="checkbox" id="ar-pdf" checked> Tek sayfalık dönem özeti PDF'i oluşturulsun</label>
+  <div class="actions" style="justify-content:space-between"><button class="btn" onclick="$('#arsiv-modal').classList.remove('on')">Vazgeç</button><button class="btn p" onclick="arsivleVeSifirla()">Arşivle ve sıfırla</button></div>
+</div></div>
+
 <section class="view" id="v-ayar">
   <div class="panel"><div class="panel-h"><h2>Telefona uygulama olarak kur</h2><span class="hint" id="pwa-durum"></span></div>
     <p>Kurulunca ana ekrandan uygulama gibi açılır. İnternet yokken de çalışır: kayıtlar cihazda tutulur, bağlantı gelince buluta gönderilir.</p>
@@ -419,7 +449,7 @@ table.sub tr.kat td{background:var(--line2);font-weight:600}
   <div class="panel"><div class="panel-h"><h2>Yedekleme ve dışa aktarım</h2></div>
     <p>Veriler bu tarayıcıda saklanır; 7 günden eski yedek için üstte uyarı çıkar. Cihazlar arası senkron için JSON yedeği Drive'a koyup diğer cihazda geri yükleyin.</p>
     <div class="tools"><button class="btn p" onclick="yedekAl()">JSON yedek indir</button><label class="btn">Yedekten geri yükle <input type="file" accept=".json" id="yukle" style="display:none"></label>
-      <button class="btn" onclick="tumXlsx()">Tüm verileri Excel'e aktar</button><label class="btn">Hareket listesi içe aktar (ekler) <input type="file" accept=".json" id="ice-aktar" style="display:none"></label><button class="btn" onclick="ornekYukle()">Örnek verileri yükle (Eylül 2026 çizelgesi)</button><button class="btn d" onclick="hepsiniSil()">Tüm verileri sil</button></div>
+      <button class="btn" onclick="tumXlsx()">Tüm verileri Excel'e aktar</button><label class="btn">Hareket listesi içe aktar (ekler) <input type="file" accept=".json" id="ice-aktar" style="display:none"></label><button class="btn" onclick="ornekYukle()">Örnek verileri yükle (Eylül 2026 çizelgesi)</button><button class="btn p" onclick="arsivAc()">Arşivle ve sıfırla (yeni dönem)</button><button class="btn d" onclick="hepsiniSil()">Tüm verileri sil</button></div>
     <div class="hint" style="margin-top:8px" id="depo"></div></div>
   <div class="panel"><div class="panel-h"><h2>Gelir / gider kategorileri</h2></div>
     <div class="tools"><input type="text" id="kat-yeni" placeholder="Yeni kategori"><select id="kat-tur"><option value="gider">Gider</option><option value="gelir">Gelir</option></select><button class="btn" onclick="katEkle()">Ekle</button></div>
@@ -472,7 +502,7 @@ document.addEventListener('DOMContentLoaded',()=>{$('#f-fb').onsubmit=e=>{e.prev
 /* ============ Veri ============ */
 const KEY='sondaj_takip_v2',ESKI='sondaj_takip_v1';
 const varsayilanKat={gelir:['Sondaj bedeli','Pompa/montaj','Boru/malzeme satışı','Avans','Diğer gelir'],gider:['Yakıt (mazot)','Personel/yevmiye','Boru ve malzeme','Bakım/onarım','Yedek parça','Nakliye','Yemek/konaklama','Vergi/harç','Diğer gider']};
-const bos=()=>({kuyular:[],isler:[],fin:[],personel:[],makineler:[],bakim:[],teklifler:[],stok:[],stokHar:[],perOdeme:[],kat:JSON.parse(JSON.stringify(varsayilanKat)),ayar:{kdv:20,nakit:0,banka:0,otoYev:1,otoYak:1}});
+const bos=()=>({kuyular:[],isler:[],fin:[],personel:[],makineler:[],bakim:[],teklifler:[],stok:[],stokHar:[],perOdeme:[],arsiv:[],kat:JSON.parse(JSON.stringify(varsayilanKat)),ayar:{kdv:20,nakit:0,banka:0,otoYev:1,otoYak:1}});
 let D;
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
@@ -490,7 +520,7 @@ const per=id=>D.personel.find(p=>p.id===id);const perAd=ids=>(ids||[]).map(i=>(p
 const turTag=t=>t==='gayri'?'<span class="tag gayri">Gayriresmi</span>':'<span class="tag resmi">Resmi</span>';
 const durumTag=o=>o.durum==='tamam'?'<span class="tag ok">Tamamlandı</span>':'<span class="tag wip">Devam</span>';
 const kaydet=()=>{if(D.stokHar)D.stokHar=D.stokHar.filter(h=>!h.oto||D.isler.some(j=>j.id===h.isId));D._ts=Date.now();D._cid=CID;try{localStorage.setItem(KEY,JSON.stringify(D))}catch(e){alert('Depolama dolu. Kuyu fotoğraflarını azaltın veya yedek alıp temizleyin.')}depoBilgi();fbGonder()};
-function normalize(v){const d=Object.assign(bos(),v);(d.personel||[]).forEach(p=>p.tip='metre');d.ayar=Object.assign(bos().ayar,v.ayar||{});d.kat=Object.assign(bos().kat,v.kat||{});['kuyular','isler','fin','personel','makineler','bakim','teklifler','stok','stokHar','perOdeme'].forEach(k=>{if(!Array.isArray(d[k]))d[k]=Object.values(d[k]||{})});d.fin.forEach(f=>{if(f.oto&&f.perId)f.odeme='Tahakkuk'});d.kuyular.forEach(k=>{if(!k.teknik||typeof k.teknik!=='object')k.teknik={}});
+function normalize(v){const d=Object.assign(bos(),v);(d.personel||[]).forEach(p=>p.tip='metre');d.ayar=Object.assign(bos().ayar,v.ayar||{});d.kat=Object.assign(bos().kat,v.kat||{});['kuyular','isler','fin','personel','makineler','bakim','teklifler','stok','stokHar','perOdeme','arsiv'].forEach(k=>{if(!Array.isArray(d[k]))d[k]=Object.values(d[k]||{})});d.arsiv.forEach(a=>{if(a.veri)['kuyular','isler','fin','perOdeme','bakim','stokHar','teklifler'].forEach(k=>{if(!Array.isArray(a.veri[k]))a.veri[k]=Object.values(a.veri[k]||{})})});d.fin.forEach(f=>{if(f.oto&&f.perId)f.odeme='Tahakkuk'});d.kuyular.forEach(k=>{if(!k.teknik||typeof k.teknik!=='object')k.teknik={}});
   d.kuyular.forEach(k=>{k.foto=Array.isArray(k.foto)?k.foto:Object.values(k.foto||{})});d.isler.forEach(j=>{j.personel=Array.isArray(j.personel)?j.personel:Object.values(j.personel||{})});d.fin.forEach(f=>{f.tahsilat=Array.isArray(f.tahsilat)?f.tahsilat:Object.values(f.tahsilat||{})});d.personel.forEach(p=>{if(!p.tip)p.tip='gun'});return d}
 function depoBilgi(){const b=new Blob([JSON.stringify(D)]).size;const el=$('#depo');if(el)el.textContent='Kullanılan depolama: '+(b/1024).toLocaleString('tr-TR',{maximumFractionDigits:0})+' KB (tarayıcı sınırı ~5.000 KB)'}
 
@@ -535,14 +565,15 @@ function nakitSatirlari(){const r=[];D.fin.forEach(o=>{
   return r}
 const nakitToplam=(rows,df)=>toplam(rows,df);
 /* Kuyudan fiilen tahsil edilen: Alacak kayıtlarında yalnız girilen tahsilatlar, diğerlerinde tutarın tamamı */
-const kuyuTahsil=id=>D.fin.filter(o=>o.kuyuId===id&&o.tur==='gelir').reduce((s,o)=>s+(o.odeme==='Alacak'?tahsilToplam(o):o.tutar),0);
+const kuyuDevir=id=>{const k=kuyu(id);return(k&&k.devir)||{}};
+const kuyuTahsil=id=>(+kuyuDevir(id).tahsil||0)+D.fin.filter(o=>o.kuyuId===id&&o.tur==='gelir').reduce((s,o)=>s+(o.odeme==='Alacak'?tahsilToplam(o):o.tutar),0);
 const kuyuAcikAlacak=id=>D.fin.filter(o=>o.kuyuId===id&&o.tur==='gelir'&&o.odeme==='Alacak').reduce((s,o)=>s+Math.max(0,o.tutar-tahsilToplam(o)),0);
 function kuyuOzet(k,ay){const isler=D.isler.filter(o=>o.kuyuId===k.id&&(!ay||o.tarih.startsWith(ay))).sort((a,b)=>a.tarih.localeCompare(b.tarih));
   const fin=D.fin.filter(o=>o.kuyuId===k.id&&(!ay||o.tarih.startsWith(ay)));const t=toplam(fin);const tumFin=D.fin.filter(o=>o.kuyuId===k.id);const tt=toplam(tumFin);
-  const metraj=Math.max(0,...D.isler.filter(o=>o.kuyuId===k.id).map(o=>+o.indm||0));
+  const dv=k.devir||{};const metraj=Math.max(0,+dv.metraj||0,...D.isler.filter(o=>o.kuyuId===k.id).map(o=>+o.indm||0));
   const tahsil=kuyuTahsil(k.id),acik=kuyuAcikAlacak(k.id);
   return{isler,fin,gun:isler.length,saat:isler.reduce((s,o)=>s+saatFark(o.bas,o.bit),0),bidon:isler.reduce((s,o)=>s+(+o.mbidon||0)+(+o.kbidon||0),0),metraj,g:t.g,x:t.x,tahsil,acik,kalan:(+k.anlasma||0)>0?(+k.anlasma||0)-tahsil:acik,tumG:tt.g,tumX:tt.x,
-    tamam:isler.length&&D.isler.filter(o=>o.kuyuId===k.id).some(o=>o.durum==='tamam')}}
+    devir:dv.donem?dv:null,tamam:!!dv.tamam||!!(isler.length&&D.isler.filter(o=>o.kuyuId===k.id).some(o=>o.durum==='tamam'))}}
 
 /* ============ Ortak UI ============ */
 $('#ay').value=bugun.slice(0,7);$('#ay').addEventListener('change',cizHepsi);const ayim=()=>$('#ay').value;
@@ -556,7 +587,7 @@ const chkDeger=el=>[...el.querySelectorAll('input:checked')].map(i=>i.value);
 /* ============ Otomatik giderler ============ */
 /* Personel hak edişi: metre başı → inkişaf boru metresi × birim ücret; günlük → birim ücret */
 /* O gün eklenen inkişaf boru metresi: aynı kuyuda bu günden önceki en yüksek boru metrajına göre artış */
-function eklenenMetre(job){const m=+job.inbm||0;if(!m)return 0;const onceki=Math.max(0,...D.isler.filter(x=>x.kuyuId===job.kuyuId&&x.id!==job.id&&(x.tarih<job.tarih||(x.tarih===job.tarih&&x.id<job.id))).map(x=>+x.inbm||0));return Math.max(0,Math.round((m-onceki)*100)/100)}
+function eklenenMetre(job){const m=+job.inbm||0;if(!m)return 0;const onceki=Math.max(0,+kuyuDevir(job.kuyuId).inbm||0,...D.isler.filter(x=>x.kuyuId===job.kuyuId&&x.id!==job.id&&(x.tarih<job.tarih||(x.tarih===job.tarih&&x.id<job.id))).map(x=>+x.inbm||0));return Math.max(0,Math.round((m-onceki)*100)/100)}
 function hakedisTutar(p,job){const u=+p.yevmiye||0;return u?eklenenMetre(job)*u:0}
 const hakedisNot=(p,job)=>`Metre ücreti: ${p.ad} · ${eklenenMetre(job)} m × ${TL(p.yevmiye)}/m`;
 /* Bir kuyudaki tüm günlerin otomatik giderlerini yeniden üret (metre artışları birbirine bağlı) */
@@ -587,12 +618,12 @@ function kuSil(id){const n=D.isler.filter(o=>o.kuyuId===id).length;if(!confirm(`
   const isIds=D.isler.filter(o=>o.kuyuId===id).map(o=>o.id);D.isler=D.isler.filter(o=>o.kuyuId!==id);D.fin=D.fin.filter(o=>!(o.oto&&isIds.includes(o.isId)));D.fin.forEach(o=>{if(o.kuyuId===id){o.kuyuId='';o.isId=''}});D.kuyular=D.kuyular.filter(k=>k.id!==id);kaydet();$('#ku-detay').style.display='none';cizHepsi();toast('Kuyu silindi')}
 $('#ku-ara').oninput=cizKuyular;$('#ku-tum').onchange=cizKuyular;
 function cizKuyular(){const q=$('#ku-ara').value.toLowerCase(),tum=$('#ku-tum').checked,ay=ayim();
-  const ks=D.kuyular.filter(k=>(!q||(k.yer+' '+k.musteri).toLowerCase().includes(q))&&(tum||D.isler.some(o=>o.kuyuId===k.id&&o.tarih.startsWith(ay))));
+  const ks=D.kuyular.filter(k=>(!q||(k.yer+' '+k.musteri).toLowerCase().includes(q))&&(tum||k.devir||D.isler.some(o=>o.kuyuId===k.id&&o.tarih.startsWith(ay))));
   const son=k=>{const d=D.isler.filter(o=>o.kuyuId===k.id).map(o=>o.tarih).sort();return d[d.length-1]||''};
   ks.sort((a,b)=>son(b).localeCompare(son(a)));
-  $('#ku-liste').innerHTML=ks.length?ks.map(k=>{const z=kuyuOzet(k);return`<div class="kuyu-kart" onclick="kuDetay('${k.id}')"><div class="ad">${esc(k.yer)} ${turTag(k.tur)} ${z.tamam?'<span class="tag ok">Tamamlandı</span>':''}</div>
+  $('#ku-liste').innerHTML=ks.length?ks.map(k=>{const z=kuyuOzet(k);return`<div class="kuyu-kart" onclick="kuDetay('${k.id}')"><div class="ad">${esc(k.yer)} ${turTag(k.tur)} ${z.tamam?'<span class="tag ok">Tamamlandı</span>':''} ${k.devir?'<span class="tag oto">devir</span>':''}</div>
     <div class="m">${esc(k.musteri)||'<i>müşteri girilmedi</i>'}${k.tel?' · '+esc(k.tel):''}</div>
-    <div class="m">${D.isler.filter(o=>o.kuyuId===k.id).length} gün · ${z.metraj} m · son: ${trh(son(k))||'—'}</div>
+    <div class="m">${D.isler.filter(o=>o.kuyuId===k.id).length} gün · ${z.metraj} m · son: ${trh(son(k))||(k.devir?trh(k.devir.tarih)+' devri':'—')}</div>
     <div class="m">Gelir ${TL(z.tumG)} · Gider ${TL(z.tumX)} · Net <b>${TL(z.tumG-z.tumX)}</b></div>
     ${k.anlasma||z.acik?`<div class="kal ${z.kalan>0.005?'kalan-p':'kalan-ok'}">Kalan tahsilat: ${TL(z.kalan)}${k.anlasma?' / '+TL(k.anlasma):''}</div>`:''}</div>`}).join(''):'<div class="empty" style="grid-column:1/-1">Kuyu yok. Yukarıdan yeni kuyu dosyası açın.</div>'}
 function kuDetay(id){const k=kuyu(id);if(!k)return;const z=kuyuOzet(k);const gider=D.fin.filter(o=>o.kuyuId===id&&o.tur==='gider');const kat={};gider.forEach(o=>kat[o.kat]=(kat[o.kat]||0)+o.tutar);
@@ -610,7 +641,7 @@ function kuDetay(id){const k=kuyu(id);if(!k)return;const z=kuyuOzet(k);const gid
       <div class="stat gelir"><div class="v">${TL(z.tahsil)}</div><div class="l">Tahsil edilen${z.acik?' · açık alacak '+TL(z.acik):''}</div></div>
       <div class="stat gider"><div class="v">${TL(z.tumX)}</div><div class="l">Toplam gider</div></div>
       <div class="stat net"><div class="v">${TL(z.tumG-z.tumX)}</div><div class="l">Net kâr (gelir ${TL(z.tumG)} − gider)${k.anlasma||z.acik?' · <b>kalan tahsilat '+TL(z.kalan)+'</b>':''}</div></div></div>
-    ${teknikHtml(k,true)}${k.koor?`<p>Koordinat: <a class="linkish" target="_blank" href="https://www.google.com/maps?q=${encodeURIComponent(k.koor)}">${esc(k.koor)}</a></p>`:''}
+    ${k.devir?`<p class="hint">Bu kuyu <b>${esc(k.devir.donem)}</b> döneminden devredildi: ${k.devir.metraj} m derinlik${k.devir.tahsil?' · '+TL(k.devir.tahsil)+' tahsilat':''}${k.devir.gun?' · '+k.devir.gun+' iş günü':''} önceki dönemde gerçekleşti. Aşağıdaki gün ve gider dökümü yalnızca yeni döneme aittir.</p>`:''}${teknikHtml(k,true)}${k.koor?`<p>Koordinat: <a class="linkish" target="_blank" href="https://www.google.com/maps?q=${encodeURIComponent(k.koor)}">${esc(k.koor)}</a></p>`:''}
     ${k.teslim||k.tutanak?`<p>Teslim: ${trh(k.teslim)||'—'} — ${esc(k.tutanak)}</p>`:''}${k.not?`<p>${esc(k.not)}</p>`:''}
     ${(k.foto||[]).length?`<div class="foto-list" style="margin-bottom:12px">${k.foto.map(f=>`<div><a href="${f}" target="_blank"><img src="${f}" alt=""></a></div>`).join('')}</div>`:''}
     <div class="rapor-baslik">Günlük seyir</div><div class="tw"><table><thead><tr><th>Tarih</th><th class="num">Ağız delgi/boru</th><th class="num">İnkişaf delgi/boru</th><th>Saat</th><th>Makine · komp.</th><th class="num">Bidon</th><th>Personel</th><th>Açıklama</th><th>Durum</th><th class="no-print"></th></tr></thead><tbody>
@@ -804,7 +835,7 @@ function raporOlustur(hepsi){const tip=$('#r-tip').value,df=$('#r-defter').value
     html=`<div class="rapor-baslik">İş günü bazlı rapor · ${ar.etiket}${dfAd}</div><div class="hint">Gelir/gider sütunları o güne bağlı hareketleri gösterir; toplam satırı aralıktaki tüm hareketleri içerir.</div><div class="tw"><table>${th(bas)}<tbody>${rows||'<tr><td colspan="12" class="empty">Bu aralıkta iş yok.</td></tr>'}</tbody><tfoot><tr><td colspan="5">Toplam · ${isler.length} iş günü</td>${tdn(T.mt.toLocaleString('tr-TR')+' m')}${tdn(s1(T.sa))}${tdn(T.bd)}<td></td>${tdn(TL(tt.g))}${tdn(TL(tt.x))}${tdn(TL(tt.g-tt.x))}</tr></tfoot></table></div>`}
   if(tip==='kuyu'){const bas=['Kuyu','Müşteri','Tür','Gün','Derinlik (m)','Saat','Bidon','Anlaşma','Gelir','Gider','Net','Kalan tahsilat','Metre maliyet'];csv.push(bas);let T={g:0,x:0,a:0};
     const kids=[...new Set([...isler.map(o=>o.kuyuId),...fin.map(o=>o.kuyuId)])].filter(id=>kuyu(id)&&(!df||kuyu(id).tur===df));
-    const rows=kids.map(id=>{const k=kuyu(id);const ii=isler.filter(o=>o.kuyuId===id),ff=fin.filter(o=>o.kuyuId===id);const t=toplam(ff,df);const mt=Math.max(0,...D.isler.filter(o=>o.kuyuId===id).map(o=>+o.indm||0));const kalan=(+k.anlasma||0)>0?(+k.anlasma||0)-kuyuTahsil(id):kuyuAcikAlacak(id);T.g+=t.g;T.x+=t.x;T.a+=+k.anlasma||0;
+    const rows=kids.map(id=>{const k=kuyu(id);const ii=isler.filter(o=>o.kuyuId===id),ff=fin.filter(o=>o.kuyuId===id);const t=toplam(ff,df);const mt=Math.max(0,+((k.devir||{}).metraj)||0,...D.isler.filter(o=>o.kuyuId===id).map(o=>+o.indm||0));const kalan=(+k.anlasma||0)>0?(+k.anlasma||0)-kuyuTahsil(id):kuyuAcikAlacak(id);T.g+=t.g;T.x+=t.x;T.a+=+k.anlasma||0;
       csv.push([k.yer,k.musteri,k.tur==='gayri'?'Gayriresmi':'Resmi',ii.length,mt,ii.reduce((s,o)=>s+saatFark(o.bas,o.bit),0),ii.reduce((s,o)=>s+(+o.mbidon||0)+(+o.kbidon||0),0),k.anlasma||0,t.g,t.x,t.g-t.x,k.anlasma?kalan:'',mt?t.x/mt:'']);
       return`<tr><td>${esc(k.yer)}</td><td>${esc(k.musteri)}</td><td>${turTag(k.tur)}</td>${tdn(ii.length)}${tdn(mt)}${tdn(s1(ii.reduce((s,o)=>s+saatFark(o.bas,o.bit),0)))}${tdn(ii.reduce((s,o)=>s+(+o.mbidon||0)+(+o.kbidon||0),0)||'')}${tdn(k.anlasma?TL(k.anlasma):'')}${tdn(TL(t.g))}${tdn(TL(t.x))}${tdn(TL(t.g-t.x))}${tdn(k.anlasma||kalan?TL(kalan):'')}${tdn(mt?TL(t.x/mt):'')}</tr>`}).join('');
     const serbest=toplam(fin.filter(o=>!o.kuyuId),df);csv.push(['Kuyuya bağlı olmayan','','','','','','','',serbest.g,serbest.x,serbest.g-serbest.x]);csv.push(['TOPLAM','','','','','','',T.a,T.g+serbest.g,T.x+serbest.x,T.g+serbest.g-T.x-serbest.x]);
@@ -868,7 +899,7 @@ const isSatirlari=()=>[['Tarih','Kuyu','Müşteri','İş türü','Ağız delgi �
 const finSatirlari=()=>[['Tarih','Tür','Defter','Kategori','Açıklama','Kuyu','Ödeme','KDV','Vade','Tutar','Gayriresmiye aktarılan','Tahsil/ödenen','Otomatik'],...[...D.fin].sort((a,b)=>a.tarih.localeCompare(b.tarih)).map(o=>[trh(o.tarih),o.tur,o.defter==='gayri'?'Gayriresmi':'Resmi',o.kat,o.not,kuyuAd(o.kuyuId),o.odeme,o.kdv,trh(o.vade),o.tutar,o.aktar||0,tahsilToplam(o),o.oto?'Evet':''])];
 const nakitSatirlariCSV=()=>[['Tarih','Tür','Defter','Kategori','Açıklama','Kuyu','Yöntem','Tutar','Kaynak','Kayıt tarihi'],...nakitSatirlari().sort((a,b)=>a.tarih.localeCompare(b.tarih)).map(o=>[trh(o.tarih),o.tur==='gelir'?'Tahsilat':'Ödeme',o.defter,o.kat,o.not,kuyuAd(o.kuyuId),o.odeme,o.tutar,o._kaynak||'Peşin',o._p?trh(o._p.tarih):''])];
 function csvIs(){indirCSV('is_gunleri.csv',isSatirlari())}function csvFn(){indirCSV($('#fn-mod').value==='nakit'?'nakit_akisi.csv':'gelir_gider.csv',$('#fn-mod').value==='nakit'?nakitSatirlariCSV():finSatirlari())}
-function tumXlsx(){xlsxIndir('sondaj_takip_'+bugun+'.xlsx',{'İş günleri':isSatirlari(),'Gelir-Gider':finSatirlari(),'Nakit akışı':nakitSatirlariCSV(),
+function tumXlsx(){xlsxIndir('sondaj_takip_'+bugun+'.xlsx',{'Arşiv dönemleri':[['Dönem','Arşiv tarihi','Başlangıç','Bitiş','İş günü','Derinlik (m)','Gelir','Gider','Net','Tahsilat','Ödeme','Kasa','Banka','Açık alacak','Açık borç'],...(D.arsiv||[]).map(a=>[a.ad,trh(a.tarih),trh(a.bas),trh(a.bit),a.ozet.gun,a.ozet.metraj,a.ozet.g,a.ozet.x,a.ozet.g-a.ozet.x,a.ozet.tahsilat,a.ozet.odeme,a.ozet.kasa,a.ozet.banka,a.ozet.acikG,a.ozet.acikX])],'İş günleri':isSatirlari(),'Gelir-Gider':finSatirlari(),'Nakit akışı':nakitSatirlariCSV(),
   'Kuyular':[['Kuyu','Müşteri','Telefon','Tür','Anlaşma','Koordinat','Teslim','Tutanak','Not'],...D.kuyular.map(k=>[k.yer,k.musteri,k.tel,k.tur,k.anlasma,k.koor,trh(k.teslim),k.tutanak,k.not])],
   'Personel':[['Ad','Görev','Telefon','Metre başı ücret (₺/m)'],...D.personel.map(p=>[p.ad,p.gorev,p.tel,p.yevmiye])],'Makineler':[['Ad','Tip','Bidon L','₺/L','Not'],...D.makineler.map(m=>[m.ad,m.tip,m.litre,m.fiyat,m.not])],
   'Bakım':[['Tarih','Makine','Açıklama','Maliyet'],...D.bakim.map(b=>[trh(b.tarih),makAd(b.makId),b.not,b.tutar])],
@@ -891,7 +922,7 @@ $('#ice-aktar').onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new 
     let kuyuId='';if(x.kuyu){const k=D.kuyular.find(k=>k.yer.toLowerCase()===String(x.kuyu).toLowerCase());if(k)kuyuId=k.id}
     D.fin.push({id:uid(),tarih:x.tarih,tur,kat,tutar:+x.tutar,kdv:x.kdv||'yok',odeme:x.odeme||'Nakit',kuyuId,isId:'',defter:x.defter==='gayri'?'gayri':'resmi',aktar:0,vade:'',not:x.not||'',oto:false,tahsilat:[],iceKey:key});n++});
   kaydet();cizHepsi();toast(n+' hareket eklendi'+(atl?', '+atl+' zaten vardı':''))}catch{alert('Dosya okunamadı. JSON dizisi bekleniyor.')}};r.readAsText(f);e.target.value=''};
-function hepsiniSil(){if(!confirm('Tüm veriler silinecek. Emin misiniz?'))return;D=bos();kaydet();hepsiniCiz();toast('Tüm veriler silindi')}
+function hepsiniSil(){if(!confirm('Arşivlenmiş dönemler dahil TÜM veriler silinecek ve geri alınamaz.\n\nYalnızca dönemi kapatmak istiyorsanız "Arşivle ve sıfırla" düğmesini kullanın.\n\nSilinsin mi?'))return;D=bos();kaydet();hepsiniCiz();toast('Tüm veriler silindi')}
 function katEkle(){const v=$('#kat-yeni').value.trim();if(!v)return;const t=$('#kat-tur').value;if(!D.kat[t].includes(v))D.kat[t].push(v);$('#kat-yeni').value='';kaydet();katDoldur();katListe();raporKatDoldur()}
 function katSil(t,k){D.kat[t]=D.kat[t].filter(x=>x!==k);kaydet();katDoldur();katListe();raporKatDoldur()}
 function katListe(){$('#kat-liste').innerHTML=['gelir','gider'].map(t=>`<h3 style="margin:8px 0 4px">${t==='gelir'?'Gelir':'Gider'}</h3>`+D.kat[t].map(k=>`<div class="cat-row"><span>${esc(k)}</span><button class="btn s" onclick="katSil('${t}','${esc(k)}')">Kaldır</button></div>`).join('')).join('')}
@@ -913,7 +944,7 @@ function ornekYukle(sessiz){if(!sessiz&&(D.isler.length||D.kuyular.length)&&!con
 
 /* ================= YENİ MODÜLLER ================= */
 /* ---- Genel: eklenen metre (herhangi bir alan için) ---- */
-function eklenenAlan(job,alan){const m=+job[alan]||0;if(!m)return 0;const onceki=Math.max(0,...D.isler.filter(x=>x.kuyuId===job.kuyuId&&x.id!==job.id&&(x.tarih<job.tarih||(x.tarih===job.tarih&&x.id<job.id))).map(x=>+x[alan]||0));return Math.max(0,Math.round((m-onceki)*100)/100)}
+function eklenenAlan(job,alan){const m=+job[alan]||0;if(!m)return 0;const onceki=Math.max(0,+kuyuDevir(job.kuyuId)[alan==='agbm'?'agbm':'inbm']||0,...D.isler.filter(x=>x.kuyuId===job.kuyuId&&x.id!==job.id&&(x.tarih<job.tarih||(x.tarih===job.tarih&&x.id<job.id))).map(x=>+x[alan]||0));return Math.max(0,Math.round((m-onceki)*100)/100)}
 function telNorm(t){let d=String(t||'').replace(/\D/g,'');if(d.startsWith('0'))d='90'+d.slice(1);else if(d.length===10)d='90'+d;return d.length>=11?d:''}
 function konumAl(sel){if(!navigator.geolocation)return toast('Bu cihaz konum vermiyor');toast('Konum alınıyor…');navigator.geolocation.getCurrentPosition(p=>{$(sel).value=p.coords.latitude.toFixed(6)+', '+p.coords.longitude.toFixed(6);toast('Konum alındı (±'+Math.round(p.coords.accuracy)+' m)')},e=>toast('Konum alınamadı: '+e.message),{enableHighAccuracy:true,timeout:15000})}
 
@@ -1068,9 +1099,171 @@ if(window.matchMedia&&matchMedia('(display-mode: standalone)').matches){setTimeo
 window.addEventListener('offline',()=>{bulutDurum('err','çevrimdışı · cihazda kayıtlı');toast('İnternet yok – kayıtlar cihazda tutuluyor')});
 window.addEventListener('online',()=>{toast('Bağlantı geldi – eşitleniyor');if(typeof fbRef!=='undefined'&&fbRef&&fbUser)fbGonder();else if(fbCfg())bulutDurum('','giriş yapılmadı')});
 
+/* ================= DÖNEM ARŞİVİ ================= */
+/* Arşiv özeti: sıfırlamadan ÖNCE, mevcut mali verilerden hesaplanır */
+function arsivOzet(){
+  const isler=D.isler,fin=D.fin,po=D.perOdeme||[];
+  const trh2=[...isler.map(o=>o.tarih),...fin.map(o=>o.tarih),...po.map(o=>o.tarih)].filter(Boolean).sort();
+  const t=toplam(fin);const d={rg:0,rx:0,gg:0,gx:0};fin.forEach(o=>{const p=parcala(o);for(const k in d)d[k]+=p[k]});
+  const nk=nakitSatirlari();const tn=toplam(nk);
+  const hes=(tur,h)=>nk.filter(o=>o.tur===tur&&(h==='nakit'?o.odeme==='Nakit':o.odeme!=='Nakit')).reduce((s,o)=>s+o.tutar,0);
+  const b=bakiye();
+  const acikG=fin.filter(o=>o.odeme==='Alacak').reduce((s,o)=>s+Math.max(0,o.tutar-tahsilToplam(o)),0);
+  const acikX=fin.filter(o=>o.odeme==='Borç').reduce((s,o)=>s+Math.max(0,o.tutar-tahsilToplam(o)),0);
+  const kat={};fin.filter(o=>o.tur==='gider').forEach(o=>kat[o.kat]=(kat[o.kat]||0)+o.tutar);
+  const kuyular=D.kuyular.map(k=>{const z=kuyuOzet(k);return{id:k.id,yer:k.yer,musteri:k.musteri,tur:k.tur,gun:z.gun,metraj:z.metraj,anlasma:+k.anlasma||0,gelir:z.tumG,gider:z.tumX,tahsil:z.tahsil,kalan:z.kalan,acik:z.acik,tamam:z.tamam}}).filter(k=>k.gun||k.gelir||k.gider||k.acik>0.005);
+  const personel=D.personel.map(p=>({ad:p.ad,ucret:+p.yevmiye||0,hakedis:perHakedis(p.id),odenen:perOdenen(p.id)})).filter(p=>p.hakedis||p.odenen);
+  const stok=(D.stok||[]).map(x=>({ad:x.ad,birim:x.birim,mevcut:stokMevcut(x.id)}));
+  return{bas:trh2[0]||'',bit:trh2[trh2.length-1]||'',gun:isler.length,
+    metraj:Math.round(kuyular.reduce((s,k)=>s+k.metraj,0)*100)/100,
+    saat:Math.round(isler.reduce((s,o)=>s+saatFark(o.bas,o.bit),0)*10)/10,
+    bidon:isler.reduce((s,o)=>s+(+o.mbidon||0)+(+o.kbidon||0),0),
+    g:t.g,x:t.x,defter:d,tahsilat:tn.g,odeme:tn.x,
+    nakitG:hes('gelir','nakit'),bankaG:hes('gelir','banka'),nakitX:hes('gider','nakit'),bankaX:hes('gider','banka'),
+    kasa:b.nakit,banka:b.banka,acikG,acikX,kayit:fin.length+po.length,
+    kat:Object.entries(kat).sort((a,b2)=>b2[1]-a[1]),kuyular,personel,stok}}
+
+function arsivAc(){
+  if(!D.isler.length&&!D.fin.length&&!(D.perOdeme||[]).length)return toast('Arşivlenecek mali kayıt yok');
+  const z=arsivOzet();const yil=(z.bit||bugun).slice(0,4);
+  $('#ar-ad').value=(z.bas&&z.bit&&z.bas.slice(0,4)!==z.bit.slice(0,4))?z.bas.slice(0,4)+'–'+yil+' Dönemi':yil+' Dönemi';
+  $('#ar-ozet').innerHTML=`<div class="ar-kart" style="margin:0"><div class="ar-sat" style="margin:0">
+    <span>Dönem: <b>${z.bas?trh(z.bas):'—'} – ${z.bit?trh(z.bit):'—'}</b></span><span>İş günü: <b>${z.gun}</b></span><span>Derinlik: <b>${z.metraj.toLocaleString('tr-TR')} m</b></span>
+    <span>Gelir: <b>${TL(z.g)}</b></span><span>Gider: <b>${TL(z.x)}</b></span><span>Net: <b>${TL(z.g-z.x)}</b></span>
+    <span>Kasa: <b>${TL(z.kasa)}</b></span><span>Banka: <b>${TL(z.banka)}</b></span>
+    ${z.acikG>0.005?`<span>Açık alacak: <b class="kalan-p">${TL(z.acikG)}</b></span>`:''}${z.acikX>0.005?`<span>Açık borç: <b class="kalan-p">${TL(z.acikX)}</b></span>`:''}</div></div>`;
+  $('#arsiv-modal').classList.add('on');$('#ar-ad').focus()}
+
+function arsivleVeSifirla(){
+  const ad=$('#ar-ad').value.trim();if(!ad)return toast('Dönem adı girin');
+  const o={kasa:$('#ar-kasa').checked,alacak:$('#ar-alacak').checked,kuyu:$('#ar-kuyu').checked,teklif:$('#ar-teklif').checked,stok:$('#ar-stok').checked};
+  if(!confirm('"'+ad+'" dönemi arşivlenecek ve tüm mali kayıtlar sıfırlanacak.\n\nPersonel, makineler, stok kalemleri, kategoriler ve firma ayarları korunur.\n\nDevam edilsin mi?'))return;
+  const ozet=arsivOzet();
+  /* Tam yedek (fotoğraflar dahil) — arşiv kaydına fotoğraf konmaz, depolama dolmasın */
+  if($('#ar-json').checked)indirBlob('arsiv_'+ad.replace(/[^\wÇĞİÖŞÜçğıöşü-]+/g,'_')+'_'+bugun+'.json',new Blob([JSON.stringify(D,null,2)],{type:'application/json'}));
+  const kopya=x=>JSON.parse(JSON.stringify(x||[]));
+  const kayit={id:uid(),ad,tarih:bugun,bas:ozet.bas,bit:ozet.bit,ozet,devirSec:o,
+    veri:{kuyular:kopya(D.kuyular).map(k=>Object.assign({},k,{foto:[],fotoSayi:(k.foto||[]).length})),
+      isler:kopya(D.isler),fin:kopya(D.fin),perOdeme:kopya(D.perOdeme),bakim:kopya(D.bakim),stokHar:kopya(D.stokHar),teklifler:kopya(D.teklifler),
+      personel:D.personel.map(p=>({id:p.id,ad:p.ad,yevmiye:p.yevmiye})),makineler:D.makineler.map(m=>({id:m.id,ad:m.ad})),stok:(D.stok||[]).map(x=>({id:x.id,ad:x.ad,birim:x.birim}))}};
+  /* --- devir hesapları (eski veriler dururken) --- */
+  const b=bakiye();const acikKayit=D.fin.filter(acikMi);
+  const devirKuyu=[],kuyuVar={};
+  D.kuyular.forEach(k=>{const z=kuyuOzet(k);
+    const devam=o.kuyu&&!z.tamam&&(z.gun||z.tumG||z.tumX||z.acik>0.005);
+    const borclu=o.alacak&&z.acik>0.005;
+    if(!devam&&!borclu)return;
+    const mx=f=>Math.max(0,...D.isler.filter(x=>x.kuyuId===k.id).map(x=>+x[f]||0));
+    devirKuyu.push(Object.assign({},k,{devir:{donem:ad,metraj:z.metraj,tahsil:o.alacak?z.tahsil:0,inbm:mx('inbm'),agbm:mx('agbm'),gun:z.gun,gider:z.tumX,tamam:z.tamam,tarih:bugun}}));
+    kuyuVar[k.id]=1});
+  const devirFin=o.alacak?acikKayit.map(x=>{const kalan=Math.round((x.tutar-tahsilToplam(x))*100)/100;const kAd=x.kuyuId&&!kuyuVar[x.kuyuId]?kuyuAd(x.kuyuId):'';
+    return{id:uid(),tarih:bugun,tur:x.tur,kat:x.kat,tutar:kalan,kdv:'yok',odeme:x.odeme,kuyuId:kuyuVar[x.kuyuId]?x.kuyuId:'',isId:'',defter:x.defter||'resmi',aktar:0,vade:x.vade||'',
+      not:'Devir ('+ad+')'+(x.not?' · '+x.not:'')+(kAd?' · '+kAd:''),oto:false,tahsilat:[],devir:true}}):[];
+  const devirStok=o.stok?(D.stok||[]).map(x=>({id:uid(),tarih:bugun,stokId:x.id,miktar:stokMevcut(x.id),not:'Devir ('+ad+')',oto:false})).filter(h=>Math.abs(h.miktar)>0.0001):[];
+  const devirTeklif=o.teklif?(D.teklifler||[]).filter(t=>t.durum==='bekliyor').map(t=>Object.assign({},t,{kuyuId:kuyuVar[t.kuyuId]?t.kuyuId:''})):[];
+  /* --- sıfırla --- */
+  D.arsiv=D.arsiv||[];D.arsiv.unshift(kayit);
+  D.isler=[];D.perOdeme=[];D.bakim=[];
+  D.fin=devirFin;D.stokHar=devirStok;D.teklifler=devirTeklif;D.kuyular=devirKuyu;
+  D.ayar.nakit=o.kasa?Math.round(b.nakit*100)/100:0;D.ayar.banka=o.kasa?Math.round(b.banka*100)/100:0;
+  D.ayar.donem=ad;D.ayar.donemBas=bugun;
+  try{kaydet()}catch(e){console.error(e)}
+  $('#arsiv-modal').classList.remove('on');hepsiniCiz();sekme('arsiv');
+  toast('"'+ad+'" arşivlendi · yeni dönem başladı');
+  if($('#ar-pdf').checked)arsivPdf(kayit.id)}
+
+/* ---- Arşiv listesi ve detayı ---- */
+function arsivBul(id){return(D.arsiv||[]).find(a=>a.id===id)}
+function cizArsiv(){
+  const el=$('#ar-liste');if(!el)return;
+  $('#ar-donem').textContent=D.ayar.donem?'Açık dönem: '+D.ayar.donem+' · '+trh(D.ayar.donemBas)+' tarihinde başladı':'Açık dönem: ilk dönem';
+  el.innerHTML=(D.arsiv||[]).map(a=>{const z=a.ozet||{};return`<div class="ar-kart"><h3>${esc(a.ad)}</h3>
+    <div class="ar-sat"><span>${z.bas?trh(z.bas):'—'} – ${z.bit?trh(z.bit):'—'}</span><span>Arşiv: ${trh(a.tarih)}</span><span>İş günü: <b>${z.gun||0}</b></span><span>Derinlik: <b>${(z.metraj||0).toLocaleString('tr-TR')} m</b></span>
+      <span>Gelir: <b>${TL(z.g)}</b></span><span>Gider: <b>${TL(z.x)}</b></span><span>Net: <b>${TL((z.g||0)-(z.x||0))}</b></span>${z.acikG>0.005?`<span>Açık alacak: <b>${TL(z.acikG)}</b></span>`:''}</div>
+    <div class="tools"><button class="btn s p" onclick="arsivDetay('${a.id}')">Ayrıntılar</button><button class="btn s" onclick="arsivPdf('${a.id}')">PDF raporu</button><button class="btn s" onclick="arsivYazdir('${a.id}')">Yazdır</button><button class="btn s" onclick="arsivJson('${a.id}')">JSON indir</button><button class="btn s d" onclick="arsivSil('${a.id}')">Sil</button></div></div>`}).join('')
+    ||'<div class="empty">Henüz arşivlenmiş dönem yok.</div>'}
+function arsivSil(id){const a=arsivBul(id);if(!a)return;if(!confirm('"'+a.ad+'" arşivi silinsin mi? Bu işlem geri alınamaz.'))return;D.arsiv=D.arsiv.filter(x=>x.id!==id);kaydet();cizArsiv();$('#ar-detay').innerHTML='';toast('Arşiv silindi')}
+function arsivJson(id){const a=arsivBul(id);if(!a)return;indirBlob('arsiv_'+a.ad.replace(/[^\wÇĞİÖŞÜçğıöşü-]+/g,'_')+'.json',new Blob([JSON.stringify(a,null,2)],{type:'application/json'}))}
+function arsivDetay(id){
+  const a=arsivBul(id);if(!a)return;const z=a.ozet||{},v=a.veri||{};
+  const tdn=x=>`<td class="num">${x}</td>`;
+  const sat=(ad,v1,v2,v3)=>`<tr><td>${ad}</td>${tdn(v1)}${tdn(v2)}${tdn(v3)}</tr>`;
+  $('#ar-detay').innerHTML=`<div class="panel"><div class="panel-h"><h2>${esc(a.ad)} · dönem dökümü</h2><div class="tools"><button class="btn s" onclick="arsivPdf('${a.id}')">PDF</button><button class="btn s" onclick="$('#ar-detay').innerHTML=''">Kapat</button></div></div>
+    <div class="grid g4" style="margin-bottom:12px"><div class="stat"><div class="v">${z.gun||0}</div><div class="l">İş günü</div></div><div class="stat"><div class="v">${(z.metraj||0).toLocaleString('tr-TR')} m</div><div class="l">Toplam derinlik</div></div><div class="stat"><div class="v">${s1(z.saat||0)} sa</div><div class="l">Çalışma</div></div><div class="stat"><div class="v">${z.bidon||0}</div><div class="l">Bidon</div></div></div>
+    <div class="grid g3" style="margin-bottom:12px"><div class="stat gelir"><div class="v">${TL(z.g)}</div><div class="l">Gelir (tahakkuk)${z.acikG>0.005?' · <b>'+TL(z.acikG)+' açık</b>':''}</div></div><div class="stat gider"><div class="v">${TL(z.x)}</div><div class="l">Gider (tahakkuk)${z.acikX>0.005?' · <b>'+TL(z.acikX)+' açık</b>':''}</div></div><div class="stat net"><div class="v">${TL((z.g||0)-(z.x||0))}</div><div class="l">Net</div></div></div>
+    <div class="grid g2"><div><div class="rapor-baslik">Nakit akışı</div><div class="tw"><table class="defter"><thead><tr><th>Hareket</th><th class="num">Nakit</th><th class="num">Banka</th><th class="num">Toplam</th></tr></thead><tbody>
+      ${sat('Tahsilat',TL(z.nakitG),TL(z.bankaG),TL(z.tahsilat))}${sat('Ödeme',TL(z.nakitX),TL(z.bankaX),TL(z.odeme))}${sat('Net nakit',TL((z.nakitG||0)-(z.nakitX||0)),TL((z.bankaG||0)-(z.bankaX||0)),TL((z.tahsilat||0)-(z.odeme||0)))}
+      ${sat('<b>Kapanış bakiyesi</b>',TL(z.kasa),TL(z.banka),TL((z.kasa||0)+(z.banka||0)))}</tbody></table></div></div>
+      <div><div class="rapor-baslik">Defter kırılımı</div><div class="tw"><table class="defter"><thead><tr><th>Defter</th><th class="num">Gelir</th><th class="num">Gider</th><th class="num">Net</th></tr></thead><tbody>
+      ${sat('Resmi',TL(z.defter.rg),TL(z.defter.rx),TL(z.defter.rg-z.defter.rx))}${sat('Gayriresmi',TL(z.defter.gg),TL(z.defter.gx),TL(z.defter.gg-z.defter.gx))}</tbody></table></div>
+      <div class="rapor-baslik">Gider kategorileri</div>${(z.kat||[]).map(([k,x])=>`<div class="cat-row"><span>${esc(k)}</span><span>${TL(x)}</span></div>`).join('')||'<div class="empty">Gider yok.</div>'}</div></div>
+    <div class="rapor-baslik">Kuyular</div><div class="tw"><table><thead><tr><th>Kuyu</th><th>Müşteri</th><th>Tür</th><th class="num">Gün</th><th class="num">Derinlik</th><th class="num">Anlaşma</th><th class="num">Gelir</th><th class="num">Gider</th><th class="num">Net</th><th class="num">Tahsil</th><th class="num">Kalan</th><th>Durum</th></tr></thead><tbody>
+      ${(z.kuyular||[]).map(k=>`<tr><td>${esc(k.yer)}</td><td>${esc(k.musteri)}</td><td>${turTag(k.tur)}</td>${tdn(k.gun)}${tdn(k.metraj+' m')}${tdn(k.anlasma?TL(k.anlasma):'')}${tdn(TL(k.gelir))}${tdn(TL(k.gider))}${tdn(TL(k.gelir-k.gider))}${tdn(TL(k.tahsil))}${tdn(k.kalan?TL(k.kalan):'')}<td>${k.tamam?'<span class="tag ok">Tamamlandı</span>':'<span class="tag wip">Devam</span>'}</td></tr>`).join('')||'<tr><td colspan="12" class="empty">Kuyu kaydı yok.</td></tr>'}</tbody></table></div>
+    ${(z.personel||[]).length?`<div class="rapor-baslik">Personel</div><div class="tw"><table><thead><tr><th>Personel</th><th class="num">₺/m</th><th class="num">Hak ediş</th><th class="num">Ödenen</th><th class="num">Bakiye</th></tr></thead><tbody>${z.personel.map(p=>`<tr><td>${esc(p.ad)}</td>${tdn(TL(p.ucret))}${tdn(TL(p.hakedis))}${tdn(TL(p.odenen))}${tdn(TL(p.hakedis-p.odenen))}</tr>`).join('')}</tbody></table></div>`:''}
+    <div class="rapor-baslik">Dönemin hareketleri (${(v.fin||[]).length} gelir/gider · ${(v.isler||[]).length} iş günü · ${(v.perOdeme||[]).length} personel ödemesi)</div>
+    <div class="tw"><table><thead><tr><th>Tarih</th><th>Tür</th><th>Kategori</th><th>Açıklama</th><th>Kuyu</th><th>Ödeme</th><th class="num">Tutar</th></tr></thead><tbody>
+      ${(v.fin||[]).slice().sort((p,q)=>p.tarih.localeCompare(q.tarih)).map(f=>{const kk=(v.kuyular||[]).find(k=>k.id===f.kuyuId);return`<tr><td>${trh(f.tarih)}</td><td><span class="tag ${f.tur}">${f.tur==='gelir'?'Gelir':'Gider'}</span></td><td>${esc(f.kat)}</td><td class="note">${esc(f.not||'')}</td><td>${esc(kk?kk.yer:'')}</td><td>${esc(f.odeme||'')}</td>${tdn(TL(f.tutar))}</tr>`}).join('')||'<tr><td colspan="7" class="empty">Kayıt yok.</td></tr>'}</tbody></table></div>
+    <p class="hint">Arşivdeki kuyu fotoğrafları yer kaplamaması için saklanmaz; tam kopya için arşivleme sırasında indirilen JSON yedeğini kullanın.</p></div>`;
+  $('#ar-detay').scrollIntoView({behavior:'smooth',block:'start'})}
+
+/* ---- Tek sayfalık dönem özeti ---- */
+const ARSIV_CSS='.ark{font-family:Arial,sans-serif;font-size:10px;color:#1c2b36}.ark h1{font-size:17px;margin:0 0 2px}.ark h2{font-size:11px;margin:9px 0 3px;border-bottom:1px solid #8aa;padding-bottom:2px;text-transform:uppercase;letter-spacing:.4px}.ark .k{color:#667;font-size:9px}.ark table{border-collapse:collapse;width:100%}.ark th,.ark td{border:1px solid #bcc;padding:2px 4px;font-size:9px;text-align:left}.ark th{background:#eef2f5}.ark td.n,.ark th.n{text-align:right}.ark .kut{display:flex;gap:5px;margin:6px 0}.ark .kut div{flex:1;border:1px solid #bcc;border-radius:3px;padding:4px 6px}.ark .kut b{display:block;font-size:13px}.ark .kut span{font-size:8px;color:#667}.ark .iki{display:flex;gap:8px}.ark .iki>div{flex:1}';
+function arsivRaporHtml(a){
+  const z=a.ozet||{},tdn=x=>`<td class="n">${x}</td>`;
+  const kuy=(z.kuyular||[]).slice().sort((p,q)=>(q.gelir-q.gider)-(p.gelir-p.gider));
+  const kat=(z.kat||[]).slice(0,10);
+  return`<div class="ark"><h1>${esc(D.ayar.firma||'Sondaj İş Takip')}</h1>
+  <div class="k">${esc(D.ayar.adres||'')}${D.ayar.tel?' · '+esc(D.ayar.tel):''}${D.ayar.vergi?' · VKN/TCKN: '+esc(D.ayar.vergi):''}</div>
+  <h2>Dönem özeti · ${esc(a.ad)}</h2>
+  <div class="k">Çalışma aralığı: ${z.bas?trh(z.bas):'—'} – ${z.bit?trh(z.bit):'—'} · Arşiv tarihi: ${trh(a.tarih)} · ${z.kayit||0} mali kayıt</div>
+  <div class="kut"><div><b>${z.gun||0}</b><span>İŞ GÜNÜ</span></div><div><b>${(z.metraj||0).toLocaleString('tr-TR')} m</b><span>TOPLAM DERİNLİK</span></div><div><b>${s1(z.saat||0)} sa</b><span>ÇALIŞMA</span></div><div><b>${z.bidon||0}</b><span>BİDON</span></div><div><b>${(z.kuyular||[]).length}</b><span>KUYU</span></div></div>
+  <div class="kut"><div><b>${TL(z.g)}</b><span>GELİR (TAHAKKUK)</span></div><div><b>${TL(z.x)}</b><span>GİDER (TAHAKKUK)</span></div><div><b>${TL((z.g||0)-(z.x||0))}</b><span>NET</span></div><div><b>${TL(z.tahsilat)}</b><span>TAHSİLAT</span></div><div><b>${TL(z.odeme)}</b><span>ÖDEME</span></div></div>
+  <div class="iki">
+    <div><h2>Nakit akışı ve kapanış</h2><table><tr><th>Hareket</th><th class="n">Nakit</th><th class="n">Banka</th><th class="n">Toplam</th></tr>
+      <tr><td>Tahsilat</td>${tdn(TL(z.nakitG))}${tdn(TL(z.bankaG))}${tdn(TL(z.tahsilat))}</tr>
+      <tr><td>Ödeme</td>${tdn(TL(z.nakitX))}${tdn(TL(z.bankaX))}${tdn(TL(z.odeme))}</tr>
+      <tr><td><b>Kapanış bakiyesi</b></td>${tdn('<b>'+TL(z.kasa)+'</b>')}${tdn('<b>'+TL(z.banka)+'</b>')}${tdn('<b>'+TL((z.kasa||0)+(z.banka||0))+'</b>')}</tr>
+      <tr><td>Açık alacak</td>${tdn('')}${tdn('')}${tdn(TL(z.acikG))}</tr>
+      <tr><td>Açık borç</td>${tdn('')}${tdn('')}${tdn(TL(z.acikX))}</tr></table>
+      <h2>Defter kırılımı</h2><table><tr><th>Defter</th><th class="n">Gelir</th><th class="n">Gider</th><th class="n">Net</th></tr>
+      <tr><td>Resmi</td>${tdn(TL(z.defter.rg))}${tdn(TL(z.defter.rx))}${tdn(TL(z.defter.rg-z.defter.rx))}</tr>
+      <tr><td>Gayriresmi</td>${tdn(TL(z.defter.gg))}${tdn(TL(z.defter.gx))}${tdn(TL(z.defter.gg-z.defter.gx))}</tr></table></div>
+    <div><h2>Gider kategorileri</h2><table><tr><th>Kategori</th><th class="n">Tutar</th><th class="n">%</th></tr>
+      ${kat.map(([k,x])=>`<tr><td>${esc(k)}</td>${tdn(TL(x))}${tdn(z.x?Math.round(x/z.x*100)+'%':'')}</tr>`).join('')||'<tr><td colspan="3">Gider yok.</td></tr>'}
+      ${(z.kat||[]).length>10?`<tr><td>Diğer (${z.kat.length-10} kalem)</td>${tdn(TL(z.kat.slice(10).reduce((s,x)=>s+x[1],0)))}${tdn('')}</tr>`:''}</table>
+      ${(z.personel||[]).length?`<h2>Personel</h2><table><tr><th>Personel</th><th class="n">₺/m</th><th class="n">Hak ediş</th><th class="n">Ödenen</th><th class="n">Bakiye</th></tr>
+      ${z.personel.map(p=>`<tr><td>${esc(p.ad)}</td>${tdn(TL(p.ucret))}${tdn(TL(p.hakedis))}${tdn(TL(p.odenen))}${tdn(TL(p.hakedis-p.odenen))}</tr>`).join('')}</table>`:''}</div></div>
+  <h2>Kuyular</h2><table><tr><th>Kuyu / yer</th><th>Müşteri</th><th>Tür</th><th class="n">Gün</th><th class="n">Derinlik</th><th class="n">Anlaşma</th><th class="n">Gelir</th><th class="n">Gider</th><th class="n">Net</th><th class="n">Tahsil</th><th class="n">Kalan</th><th>Durum</th></tr>
+  ${kuy.slice(0,16).map(k=>`<tr><td>${esc(k.yer)}</td><td>${esc(k.musteri)}</td><td>${k.tur==='gayri'?'Gayri':'Resmi'}</td>${tdn(k.gun)}${tdn(k.metraj+' m')}${tdn(k.anlasma?TL(k.anlasma):'—')}${tdn(TL(k.gelir))}${tdn(TL(k.gider))}${tdn(TL(k.gelir-k.gider))}${tdn(TL(k.tahsil))}${tdn(k.kalan?TL(k.kalan):'—')}<td>${k.tamam?'Tamam':'Devam'}</td></tr>`).join('')||'<tr><td colspan="12">Kuyu kaydı yok.</td></tr>'}
+  ${kuy.length>16?`<tr><td colspan="12">… ve ${kuy.length-16} kuyu daha (uygulamadaki arşiv ayrıntısında)</td></tr>`:''}</table>
+  <div class="k" style="margin-top:8px">Bu rapor ${trh(a.tarih)} tarihinde dönem kapanışında oluşturulmuştur. Gelir/gider tahakkuk esaslıdır; tahsilat ve ödeme satırları paranın girdiği–çıktığı tarihe göredir.</div></div>`}
+
+async function pdfTekSayfa(govde){
+  const kap=document.createElement('div');kap.style.cssText='position:fixed;left:-12000px;top:0;width:1060px;background:#fff;padding:26px;box-sizing:border-box';
+  kap.innerHTML='<style>'+ARSIV_CSS+'</style>'+govde;document.body.appendChild(kap);
+  try{const c=await html2canvas(kap,{scale:2,backgroundColor:'#ffffff'});
+    const pdf=new window.jspdf.jsPDF('l','mm','a4');const pw=297,ph=210;
+    let w=pw,h=c.height*pw/c.width;if(h>ph){h=ph;w=c.width*ph/c.height}
+    pdf.addImage(c.toDataURL('image/jpeg',0.92),'JPEG',(pw-w)/2,0,w,h);
+    return pdf.output('blob')}finally{kap.remove()}}
+
+function arsivYazdir(id){const a=arsivBul(id);if(!a)return;const w=window.open('','_blank');if(!w)return alert('Açılır pencere engellendi.');
+  w.document.write('<!DOCTYPE html><html lang="tr"><head><meta charset="utf-8"><title>'+esc(a.ad)+' – dönem özeti</title><style>@page{size:A4 landscape;margin:10mm}body{margin:0}'+ARSIV_CSS+'</style></head><body>'+arsivRaporHtml(a)+'</body></html>');
+  w.document.close();setTimeout(()=>w.print(),400)}
+
+async function arsivPdf(id){
+  const a=arsivBul(id);if(!a)return;
+  if(typeof html2canvas==='undefined'||!window.jspdf){toast('PDF kütüphanesi yüklenemedi; yazdırma açılıyor');return arsivYazdir(id)}
+  toast('Dönem raporu hazırlanıyor…');
+  let blob;try{blob=await pdfTekSayfa(arsivRaporHtml(a))}catch(e){console.error(e);toast('PDF oluşturulamadı; yazdırma açılıyor');return arsivYazdir(id)}
+  const dosya='donem_ozeti_'+a.ad.replace(/[^\wÇĞİÖŞÜçğıöşü-]+/g,'_')+'.pdf';
+  const file=new File([blob],dosya,{type:'application/pdf'});
+  if(navigator.canShare&&navigator.canShare({files:[file]})){try{await navigator.share({files:[file],title:a.ad+' – dönem özeti'});return}catch(e){if(e.name==='AbortError')return}}
+  indirBlob(dosya,blob);toast('Dönem özeti PDF indirildi')}
+
 function cizHepsi(){[$('#is-kuyu'),$('#sh-kuyu')].forEach(s=>kuyuSecDoldur(s));kuyuSecDoldur($('#fn-kuyu'),'— Seçilmedi —');makSecDoldur($('#is-mak'),'makine');makSecDoldur($('#is-komp'),'komp');makSecDoldur($('#sh-mak'),'makine');makSecDoldur($('#sh-komp'),'komp');
   if(!$('#is-id').value)perChk($('#is-personel'));if(!$('#sh-personel').children.length||!$('#sh-personel').querySelector('input:checked'))perChk($('#sh-personel'));
-  cizIsler();cizFin();cizAlacak();cizPersonel();cizPerCari();cizTeklif();cizStok();stokUyari();if(harita&&$('#ku-harita').style.display!=='none')haritaCiz();cizMakine();cizOzet();cizKuyular();katListe();raporKatDoldur();yedekUyari();depoBilgi();if($('#r-out').querySelector('table,.stat'))raporOlustur();if($('#ku-detay').style.display!=='none'&&$('#ku-detay').querySelector('h2')){const m=$('#ku-detay').innerHTML.match(/kuDuzenle\('([^']+)'\)/);if(m&&kuyu(m[1]))kuDetay(m[1]);else $('#ku-detay').style.display='none'}}
+  cizIsler();cizFin();cizAlacak();cizPersonel();cizPerCari();cizTeklif();cizStok();stokUyari();if(harita&&$('#ku-harita').style.display!=='none')haritaCiz();cizMakine();cizOzet();cizKuyular();cizArsiv();katListe();raporKatDoldur();yedekUyari();depoBilgi();if($('#r-out').querySelector('table,.stat'))raporOlustur();if($('#ku-detay').style.display!=='none'&&$('#ku-detay').querySelector('h2')){const m=$('#ku-detay').innerHTML.match(/kuDuzenle\('([^']+)'\)/);if(m&&kuyu(m[1]))kuDetay(m[1]);else $('#ku-detay').style.display='none'}}
 function hepsiniCiz(){isTemizle();fnTemizle();kuTemizle();peTemizle();mkTemizle();bkTemizle();tkTemizle();skTemizle();poTemizle();$('#sh-tarih').value=bugun;ayarDoldur();cizHepsi()}
 yukle();hepsiniCiz();fbBaslat();
 </script>
